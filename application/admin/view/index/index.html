@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {include file="common/header" /}
+</head>
+<body>
+{include file="common/top" /}
+<!-- 中部开始 -->
+<!-- 左侧菜单开始 -->
+<div class="left-nav">
+    <div id="side-nav">
+        <?php if(isset($menu)):?>
+        <ul id="nav">
+            <?php foreach($menu as $v):?>
+            <li>
+                <a _href="<?php if(!isset($v['son'])):?>{:url($v.controller.'/'.$v.action)}<?php else:?>javascript:;<?php endif;?>">
+                    <i class="iconfont"><?php echo $v['icon'];?></i>
+                    <cite><?php echo $v['rule_name'];?></cite>
+                    <?php if(isset($v['son'])):?>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                    <?php endif;?>
+                </a>
+                <?php if(isset($v['son'])):?>
+                <ul class="sub-menu">
+                    <?php foreach($v['son'] as $vv):?>
+                    <li>
+                        <a _href="<?php if(!isset($vv['son'])):?>{:url($vv.controller.'/'.$vv.action)}<?php else:?>javascript:;<?php endif;?>">
+                            <i class="iconfont"><?php if(isset($vv['son'])):?><?php echo $vv['icon'];?><?php else:?>&#xe6a7;<?php endif;?></i>
+                            <cite><?php echo $vv['rule_name'];?></cite>
+                            <?php if(isset($vv['son'])):?>
+                            <i class="iconfont nav_right">&#xe697;</i>
+                            <?php endif;?>
+                        </a>
+                        <?php if(isset($vv['son'])):?>
+                        <ul class="sub-menu">
+                            <?php foreach($vv['son'] as $vvv):?>
+                            <li>
+                                <a _href="<?php if(!isset($vvv['son'])):?>{:url($vvv.controller.'/'.$vvv.action)}<?php else:?>javascript:;<?php endif;?>">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite><?php echo $vvv['rule_name'];?></cite>
+                                </a>
+                            </li >
+                            <?php endforeach;?>
+                        </ul>
+                        <?php endif;?>
+                    </li >
+                    <?php endforeach;?>
+                </ul>
+                <?php endif;?>
+            </li>
+            <?php endforeach;?>
+        </ul>
+        <?php endif;?>
+    </div>
+</div>
+<!-- 左侧菜单结束 -->
+<!-- 右侧主体开始 -->
+<div class="page-content">
+    <iframe src='{:url("index/welcome")}' frameborder="0" scrolling="yes" class="x-iframe" style="width: 100%;height:100%;"></iframe>
+</div>
+<!-- 右侧主体结束 -->
+<!-- 中部结束 -->
+{include file="common/footer" /}
+</body>
+</html>

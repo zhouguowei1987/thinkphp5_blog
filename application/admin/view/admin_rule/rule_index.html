@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {include file="common/header" /}
+</head>
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+          <a href="{:url('index/welcome')}">控制面板</a>
+          <a><cite>权限节点</cite></a>
+      </span>
+</div>
+<div class="x-body">
+
+    <xblock>
+        <div class="layui-btn-group">
+            <a class="layui-btn"  href="{:url('admin_rule/ruleAdd')}?pid=0"><i class="layui-icon">&#xe61f;</i>添加</a>
+            <button class="layui-btn layui-btn-warm" onclick="javascript:window.location.reload()"><i class="layui-icon">&#xe669;</i>刷新</button>
+        </div>
+    </xblock>
+
+    <form class="layui-form layui-form-pane" onsubmit="return false;">
+        <table class="layui-table layui-form">
+            <thead>
+            <tr>
+                <th width="50">ID</th>
+                <th width="300">权限节点名</th>
+                <th width="50">排序</th>
+                <th width="80">菜单显示</th>
+                <th>操作</th>
+            </thead>
+            <?php if(isset($rule)):?>
+            <tbody class="x-cate">
+            <?php foreach($rule as $v):?>
+            <tr cate-id='<?php echo $v["rule_id"];?>' fid='<?php echo $v["pid"];?>' >
+                <td><?php echo $v['rule_id'];?></td>
+                <td>
+                    <i class="layui-icon x-show" status='true'>&#xe623;</i><?php echo $v["rule_name"];?>
+                </td>
+                <td><input type="text" class="layui-input x-sort" name="list_order" value="<?php echo $v['list_order'];?>"></td>
+                <td>
+                    <input type="checkbox" name="switch"  lay-text="显示|不显示" <?php if($v['status'] == 1):?>checked="checked"<?php endif;?> data-id="<?php echo $v['rule_id'];?>" lay-filter="switchStatus" lay-skin="switch">
+                </td>
+                <td class="td-manage">
+                    <a class="layui-btn layui-btn-xs layui-btn-radius"  href="{:url('admin_rule/ruleEdit')}?rule_id=<?php echo $v['rule_id'];?>" ><i class="layui-icon">&#xe642;</i>编辑</a>
+                    <a class="layui-btn layui-btn-warm layui-btn-xs layui-btn-radius" href="{:url('admin_rule/ruleAdd')}?pid=<?php echo $v['rule_id'];?>" ><i class="layui-icon">&#xe642;</i>添加子栏目</a>
+                    <button class="layui-btn layui-btn-danger layui-btn-xs layui-btn-radius"  onclick="rule_del('<?php echo $v['rule_id'];?>')"><i class="layui-icon">&#xe640;</i>删除</button>
+                </td>
+            </tr>
+            <?php if(isset($v['son'])):?>
+            <?php foreach($v['son'] as $vv):?>
+            <tr cate-id='<?php echo $vv["rule_id"];?>' fid='<?php echo $vv["pid"];?>' >
+                <td><?php echo $vv['rule_id'];?></td>
+                <td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <i class="layui-icon x-show" status='true'>&#xe623;</i><?php echo $vv["rule_name"];?>
+                </td>
+                <td><input type="text" class="layui-input x-sort" name="list_order" value="<?php echo $vv['list_order'];?>"></td>
+                <td>
+                    <input type="checkbox" name="switch"  lay-text="显示|不显示" <?php if($vv['status'] == 1):?>checked="checked"<?php endif;?> data-id="<?php echo $vv['rule_id'];?>" lay-filter="switchStatus" lay-skin="switch">
+                </td>
+                <td class="td-manage">
+                    <a class="layui-btn layui-btn-xs layui-btn-radius"  href="{:url('admin_rule/ruleEdit')}?rule_id=<?php echo $vv['rule_id'];?>" ><i class="layui-icon">&#xe642;</i>编辑</a>
+                    <a class="layui-btn layui-btn-warm layui-btn-xs layui-btn-radius"  href="{:url('admin_rule/ruleAdd')}?pid=<?php echo $vv['rule_id'];?>" ><i class="layui-icon">&#xe642;</i>添加子栏目</a>
+                    <button class="layui-btn layui-btn-danger layui-btn-xs layui-btn-radius"  onclick="rule_del('<?php echo $vv['rule_id'];?>')" ><i class="layui-icon">&#xe640;</i>删除</button>
+                </td>
+            </tr>
+            <?php if(isset($vv['son'])):?>
+            <?php foreach($vv['son'] as $vvv): ?>
+            <tr cate-id='<?php echo $vvv["rule_id"];?>' fid='<?php echo $vvv["pid"];?>'>
+                <td><?php echo $vvv['rule_id'];?></td>
+                <td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    ├<?php echo $vvv["rule_name"];?>
+                </td>
+                <td><input type="text" class="layui-input x-sort" name="list_order" value="<?php echo $vvv['list_order'];?>"></td>
+                <td>
+
+                </td>
+                <td class="td-manage">
+                    <a class="layui-btn layui-btn-xs layui-btn-radius"  href="{:url('admin_rule/ruleEdit')}?rule_id=<?php echo $vvv['rule_id'];?>" ><i class="layui-icon">&#xe642;</i>编辑</a>
+                    <button class="layui-btn layui-btn-danger layui-btn-xs layui-btn-radius"  onclick="rule_del('<?php echo $vvv['rule_id'];?>')"><i class="layui-icon">&#xe640;</i>删除</button>
+                </td>
+            </tr>
+            <?php endforeach;?>
+            <?php endif;?>
+            <?php endforeach;?>
+            <?php endif;?>
+            <?php endforeach;?>
+            </tbody>
+            <?php endif;?>
+        </table>
+    </form>
+</div>
+<script>
+    $(function(){
+        $(".x-show").click();
+    })
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+        //监听指定开关
+        form.on('switch(switchStatus)', function(data){
+            var status = this.checked ? 1 : 0;
+            if(status == 1){
+                msg = '真的要左侧菜单显示吗？';
+            }else if(status == 0){
+                msg = '真的要不在左侧菜单显示吗？';
+            }
+            var obj = this;
+            var rule_id = $(obj).data('id');
+            var x = data.elem.checked;
+            layer.confirm(msg, function(index) {
+                var load_index = layer.load(1, {
+                    shade: [0.5, '#fff'] //0.1透明度的白色背景
+                });
+                var post_url = "{:url('admin_rule/ajaxUpdateRuleStatus')}";
+                var post_data = {"rule_id":rule_id,"status":status};
+                $.ajax({
+                    type : "POST",
+                    url : post_url,
+                    data:post_data,
+                    dataType:'json',
+                    success : function(result){
+                        layer.close(load_index);
+                        if(result.status == 500){
+                            layer.msg(result.msg, {icon: 5});
+                        }else if(result.status == 200){
+                            layer.msg(result.msg, {icon: 6});
+                        }
+                    }
+                });
+            },function () {
+                data.elem.checked = !x;
+                form.render();
+            })
+        });
+    });
+    //删除权限节点
+    function rule_del(rule_id) {
+        layer.confirm('真的要删除该权限节点吗？', function(index) {
+            var load_index = layer.load(1, {
+                shade: [0.5, '#fff'] //0.1透明度的白色背景
+            });
+            var post_url = "{:url('admin_rule/ajaxDeleteRule')}";
+            var post_data = {"rule_id":rule_id};
+            $.ajax({
+                type : "POST",
+                url : post_url,
+                data:post_data,
+                dataType:'json',
+                success : function(result){
+                    layer.close(load_index);
+                    if(result.status == 500){
+                        layer.msg(result.msg, {icon: 5});
+                    }else if(result.status == 200){
+                        layer.msg(result.msg, {icon: 6},function () {
+                            window.location.reload();
+                        });
+                    }
+                }
+            });
+        })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file="common/header" /}
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+          <a href="{:url('index/welcome')}">控制面板</a>
+          <a><cite>博客设置</cite></a>
+      </span>
+</div>
+<div class="x-body">
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>博客名称：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text"  name="blog_name" lay-verify="required" placeholder="输入博客名称..." autocomplete="off" value="<?php if(isset($blog_system)):?><?php echo $blog_system['blog_name'];?><?php endif;?>" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>关键字：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="blog_keywords" lay-verify="required" placeholder="输入关键字（英文逗号分隔）..." autocomplete="off" value="<?php if(isset($blog_system)):?><?php echo $blog_system['blog_keywords'];?><?php endif;?>" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>博客描述：
+            </label>
+            <div class="layui-input-block">
+                <textarea name="blog_description" lay-verify="required" placeholder="输入描述..." autocomplete="off" value="" class="layui-textarea"><?php if(isset($blog_system)):?><?php echo $blog_system['blog_description'];?><?php endif;?></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button  class="layui-btn" lay-filter="save" lay-submit="">
+                确定保存
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //监听提交
+        form.on('submit(save)', function(data){
+            var blog_name = $("input[name='blog_name']").val();
+            var blog_keywords = $("input[name='blog_keywords']").val();
+            var blog_description = $("textarea[name='blog_description']").val();
+
+            var post_url = "{:url('blog_system/info')}";
+            var post_data = {"blog_name":blog_name,"blog_keywords":blog_keywords,"blog_description":blog_description};
+            var index = layer.load(1, {
+                shade: [0.5,'#fff'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                type : "POST",
+                url : post_url,
+                data:post_data,
+                dataType:'json',
+                success : function(result){
+                    layer.close(index);
+                    if(result.status == 500){
+                        layer.msg(result.msg, {icon: 5});
+                    }else if(result.status == 200){
+                        layer.msg(result.msg, {icon: 6},function () {
+                            window.location.href = result.referr_url;
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

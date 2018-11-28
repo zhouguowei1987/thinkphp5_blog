@@ -1,0 +1,21 @@
+<nav>
+    <div class="logo"><a href="{:url('blog/index')}">周国伟个人博客</a></div>
+    <h2 id="mnavh"><span class="navicon"></span></h2>
+    <?php if(isset($nav)):?>
+    <ul id="starlist">
+        <?php foreach($nav as $v):?>
+        <?php if(!isset($v['son'])):?>
+        <li><a href="<?php echo $v['nav_url'];?>"><?php echo $v['nav_name'];?></a></li>
+        <?php else:?>
+        <li class="menu"><a href="<?php echo $v['nav_url'];?>"><?php echo $v['nav_name'];?></a>
+            <ul class="sub">
+                <?php foreach($v['son'] as $vv):?>
+                <li><a href="<?php echo $vv['nav_url'];?>"><?php echo $vv['nav_name'];?></a></li>
+                <?php endforeach;?>
+            </ul>
+        </li>
+        <?php endif;?>
+        <?php endforeach;?>
+    </ul>
+    <?php endif;?>
+</nav>

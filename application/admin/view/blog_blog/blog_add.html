@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file="common/header" /}
+    <script charset="utf-8" src="/public/static/admin/lib/kindeditor/kindeditor-all.js"></script>
+    <script charset="utf-8" src="/public/static/admin/lib/kindeditor/lang/zh-CN.js"></script>
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+          <a href="{:url('index/welcome')}">控制面板</a>
+          <a href="{:url('blog_blog/blogIndex')}">博文管理</a>
+          <a><cite>添加博文</cite></a>
+      </span>
+</div>
+<div class="x-body">
+    <form class="layui-form" style="padding: 10px; background-color: #F2F2F2;">
+        <div class="layui-row">
+            <div class="layui-col-md9">
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">
+                                <span class="x-red">*</span>博文标题：
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="hidden" name="blog_id" lay-verify="" autocomplete="off" value="" class="layui-input">
+                                <input type="text" name="blog_title" lay-verify="required" placeholder="输入博文标题..." autocomplete="off" value="" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">
+                                <span class="x-red">*</span>博文分类：
+                            </label>
+                            <div class="layui-input-inline">
+                                <?php if(isset($category)):?>
+                                <select name="category_id">
+                                    <option value="">==选择博文分类==</option>
+                                    <?php foreach($category as $v):?>
+                                    <?php if(isset($v['son'])):?>
+                                    <optgroup label="<?php echo $v['category_name'];?>">
+                                        <?php foreach($v['son'] as $vv):?>
+                                        <option value="<?php echo $vv['category_id'];?>"><?php echo $vv['category_name'];?></option>
+                                        <?php endforeach;?>
+                                    </optgroup>
+                                    <?php else:?>
+                                    <option value="<?php echo $v['category_id'];?>"><?php echo $v['category_name'];?></option>
+                                    <?php endif;?>
+                                    <?php endforeach;?>
+                                </select>
+                                <?php endif;?>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">
+                                <span class="x-red"></span>关键词：
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text"  name="blog_keywords" lay-verify="" placeholder="输入博文关键词（多个用英文逗号分隔）..." autocomplete="off" value="" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">
+                                <span class="x-red"></span>博文描述：
+                            </label>
+                            <div class="layui-input-block">
+                                <textarea name="blog_description" placeholder="输入博文描述..." class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">博文排序：</label>
+                            <div class="layui-input-inline">
+                                <input type="type" name="list_sort" lay-verify="number" placeholder="输入博文排序..." value="0" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">博文类型：</label>
+                            <div class="layui-input-block">
+                                <input type="hidden" name="blog_type" value="1" class="layui-input">
+                                <input type="checkbox" checked="" lay-skin="switch" lay-filter="switchBlogType" lay-text="系统博文|外链博文">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" id="blog_detail_div">
+                            <label class="layui-form-label">
+                                <span class="x-red">*</span>博文内容：
+                            </label>
+                            <div class="layui-input-block">
+                                <textarea id="blog_detail" name="blog_detail" placeholder="输入博文内容..." style="width:100%;height:400px;" class="layui-textarea"></textarea>
+                            </div>
+                            <script>
+                                KindEditor.ready(function(K) {
+                                    window.editor = K.create('#blog_detail');
+                                });
+                            </script>
+                        </div>
+                        <div class="layui-form-item" id="blog_url_div" style="display: none;">
+                            <label class="layui-form-label">
+                                <span class="x-red">*</span>博文外链：
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text"  name="blog_url" lay-verify="blog_url" placeholder="输入博文外链地址..." autocomplete="off" value="" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <div class="layui-upload">
+                                    <input type="hidden" name="blog_thumb" lay-verify="" autocomplete="off" value="" class="layui-input">
+                                    <button class="layui-btn" type="button" id="blog_thumb_button"><i class="layui-icon">&#xe67c;</i>上传缩略图</button>
+                                    <div class="layui-upload-list">
+                                        <img id="blog_thumb_preview" class="layui-upload-img" style="display:none;width: 100%;" src="">
+                                    </div>
+                                </div>
+                            </div>
+                            <script>
+                                layui.use('upload', function() {
+                                    var upload = layui.upload;
+                                    upload.render({
+                                        elem: '#blog_thumb_button',
+                                        url: '{:url("common/ajaxCommonUploadImages")}',
+                                        data: {'upload_file':'blog_thumb_file','save_path':'blog/blog_thumb'},
+                                        accept:'images',
+                                        acceptMime: 'image/*',
+                                        auto:true,
+                                        field:'blog_thumb_file',
+                                        before: function(obj){
+                                            //预读本地文件示例，不支持ie8
+                                            obj.preview(function(index, file, result){
+                                                $('#blog_thumb_preview').attr('src', result);
+                                            });
+                                            layer.load(); //上传loading
+                                        },
+                                        done: function(res, index, upload){
+                                            if(res.status == 200){
+                                                //上传成功
+                                                $("#blog_thumb_preview").show().attr('src',res.save_path);
+                                                $("input[name='blog_thumb']").val(res.save_path);
+                                                layer.msg(res.msg, {icon: 6});
+                                            }else if(res.status == 500){
+                                                //上传失败
+                                                $("#blog_thumb_preview").hide();
+                                                layer.msg(res.msg, {icon: 5});
+                                            }
+                                            layer.closeAll('loading'); //关闭loading
+                                        },
+                                        error: function(index, upload){
+                                            layer.closeAll('loading'); //关闭loading
+                                        }
+                                    })
+                                });
+                            </script>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="hidden" name="is_index" value="1" class="layui-input">
+                                <input type="checkbox" checked="" lay-skin="switch" lay-filter="switchIsIndex" lay-text="首页显示|首页隐藏">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" id="index_sort_div">
+                            <div class="layui-input-inline">
+                                <input type="type" name="index_sort" lay-verify="number" placeholder="输入首页排序..." value="0" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="hidden" name="is_top" value="1" class="layui-input">
+                                <input type="checkbox" checked="" lay-skin="switch" lay-filter="switchIsTop" lay-text="设置置顶|取消置顶">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" id="is_top_div">
+                            <div class="layui-input-inline">
+                                <input type="type" name="top_sort" lay-verify="number" placeholder="输入置顶排序..." value="0" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="hidden" name="allow_comment" value="1" class="layui-input">
+                                <input type="checkbox" checked="" lay-skin="switch" lay-filter="switchAllowComment" lay-text="开启评论|关闭评论">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <button  class="layui-btn" lay-filter="save" lay-submit="">
+                                确定保存
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            blog_url: function(value){
+                if($("input[name='blog_type']").val() == 0){
+                    if(value.length <= 0){
+                        return '必填项不能为空';
+                    }
+                }
+                if(typeof value != 'undefined' && value.length > 0){
+                    var reg = /(^#)|(^http(s*):\/\/[^\s]+\.[^\s]+)/;
+                    if(!reg.test(value)){
+                        return '链接格式不正确';
+                    }
+                }
+            }
+        });
+
+        //监听指定开关---首页显示
+        form.on('switch(switchIsIndex)', function(data){
+            if(this.checked){
+                $("input[name='is_index']").val(1);
+                $("#index_sort_div").show();
+            }else{
+                $("input[name='is_index']").val(0);
+                $("#index_sort_div").hide();
+            }
+        });
+
+        //监听指定开关---置顶排序
+        form.on('switch(switchIsTop)', function(data){
+            if(this.checked){
+                $("input[name='is_top']").val(1);
+                $("#is_top_div").show();
+            }else{
+                $("input[name='is_top']").val(0);
+                $("#is_top_div").hide();
+            }
+        });
+
+        //监听指定开关---是否评论
+        form.on('switch(switchAllowComment)', function(data){
+            if(this.checked){
+                $("input[name='allow_comment']").val(1);
+            }else{
+                $("input[name='allow_comment']").val(0);
+            }
+        });
+
+        //监听指定开关---系统博文、外链博文
+        form.on('switch(switchBlogType)', function(data){
+            if(this.checked){
+                $("input[name='blog_type']").val(1);
+                $("#blog_detail_div").show();
+                $("#blog_url_div").hide();
+            }else{
+                $("input[name='blog_type']").val(0);
+                $("#blog_detail_div").hide();
+                $("#blog_url_div").show();
+            }
+        });
+
+        //监听提交
+        form.on('submit(save)', function(data){
+            var post_data = {};
+            var blog_id = $("input[name='blog_id']").val();
+            post_data.blog_id = blog_id;
+            var category_id = $("select[name='category_id']").val();
+            post_data.category_id = category_id;
+            var blog_title = $("input[name='blog_title']").val();
+            post_data.blog_title = blog_title;
+            var blog_keywords = $("input[name='blog_keywords']").val();
+            post_data.blog_keywords = blog_keywords;
+            var blog_description = $("textarea[name='blog_description']").val();
+            post_data.blog_description = blog_description;
+            var blog_thumb = $("input[name='blog_thumb']").val();
+            post_data.blog_thumb = blog_thumb;
+            var blog_detail = editor.html();
+            post_data.blog_detail = blog_detail;
+            var list_sort = $("input[name='list_sort']").val();
+            post_data.list_sort = list_sort;
+            var blog_type = $("input[name='blog_type']").val();
+            post_data.blog_type = blog_type;
+            var blog_url = $("input[name='blog_url']").val();
+            post_data.blog_url = blog_url;
+            var is_index = $("input[name='is_index']").val();
+            post_data.is_index = is_index;
+            var index_sort = $("input[name='index_sort']").val();
+            post_data.index_sort = index_sort;
+            var is_top = $("input[name='is_top']").val();
+            post_data.is_top = is_top;
+            var top_sort = $("input[name='top_sort']").val();
+            post_data.top_sort = top_sort;
+            var allow_comment = $("input[name='allow_comment']").val();
+            post_data.allow_comment = allow_comment;
+            var post_url = "{:url('blog_blog/ajaxSaveBlog')}";
+            var post_data = post_data
+            var index = layer.load(1, {
+                shade: [0.5,'#fff'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                type : "POST",
+                url : post_url,
+                data:post_data,
+                dataType:'json',
+                success : function(result){
+                    layer.close(index);
+                    if(result.status == 500){
+                        layer.msg(result.msg, {icon: 5});
+                    }else if(result.status == 200){
+                        layer.msg(result.msg, {icon: 6},function () {
+                            window.location.href = result.referr_url;
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

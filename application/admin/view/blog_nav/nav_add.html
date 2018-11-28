@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file="common/header" /}
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+          <a href="{:url('index/welcome')}">控制面板</a>
+          <a href="{:url('blog_nav/navIndex')}">博客导航</a>
+          <a><cite>添加导航</cite></a>
+      </span>
+</div>
+<div class="x-body">
+    <form class="layui-form layui-form-pane">
+        <?php if(isset($parent_nav_info)):?>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>上级导航：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="pid_nav_name" lay-verify="required" placeholder="输入上级导航名称..." autocomplete="off" value="<?php if(isset($parent_nav_info)):?><?php echo $parent_nav_info['nav_name'];?><?php endif;?>" disabled="disabled" class="layui-input">
+            </div>
+        </div>
+        <?php endif;?>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>导航名称：
+            </label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="pid" value="<?php if(isset($parent_nav_info)):?><?php echo $parent_nav_info['nav_id'];?><?php else:?>0<?php endif;?>" class="layui-input">
+                <input type="hidden" name="nav_id" value="0" class="layui-input">
+                <input type="hidden" name="level" value="<?php if(isset($parent_nav_info)):?><?php echo $parent_nav_info['level'] + 1;?><?php else:?>1<?php endif;?>" class="layui-input">
+                <input type="text" name="nav_name" lay-verify="required" placeholder="输入导航名称..." autocomplete="off" value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                导航URL：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="nav_url" lay-verify="url" placeholder="输入导航URL..." autocomplete="off" value="" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>输入http或https开头的网址
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                排序：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="list_order" lay-verify="number" placeholder="输入排序..." autocomplete="off" value="0" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">显示：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="status" value="1" class="layui-input">
+                <input type="checkbox" checked="" switch="status" lay-skin="switch" lay-filter="switchStatus" lay-text="显示|不显示">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button  class="layui-btn" lay-filter="save" lay-submit="">
+                确定保存
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //监听指定开关
+        form.on('switch(switchStatus)', function(data){
+            this.checked ? $("input[name='status']").val(1) : $("input[name='status']").val(0);
+        });
+
+        //监听提交
+        form.on('submit(save)', function(data){
+            var nav_id = $("input[name='nav_id']").val();
+            var level = $("input[name='level']").val();
+            var nav_name = $("input[name='nav_name']").val();
+            var pid = $("input[name='pid']").val();
+            var nav_url = $("input[name='nav_url']").val();
+            var status = $("input[name='status']").val();
+            var list_order = $("input[name='list_order']").val();
+
+
+            var post_url = "{:url('blog_nav/ajaxSaveNav')}";
+            var post_data = {"nav_id":nav_id,"level":level,"nav_name":nav_name,"pid":pid,"nav_url":nav_url,"status":status,"list_order":list_order};
+            var index = layer.load(1, {
+                shade: [0.5,'#fff'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                type : "POST",
+                url : post_url,
+                data:post_data,
+                dataType:'json',
+                success : function(result){
+                    layer.close(index);
+                    if(result.status == 500){
+                        layer.msg(result.msg, {icon: 5});
+                    }else if(result.status == 200){
+                        layer.msg(result.msg, {icon: 6},function () {
+                            window.location.href = result.referr_url;
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

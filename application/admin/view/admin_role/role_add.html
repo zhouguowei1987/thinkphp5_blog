@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file="common/header" /}
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+          <a href="{:url('index/welcome')}">控制面板</a>
+          <a href="{:url('admin_role/roleIndex')}">角色列表</a>
+          <a><cite>添加角色</cite></a>
+      </span>
+</div>
+<div class="x-body">
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>角色名：
+            </label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="role_id" value="0" class="layui-input">
+                <input type="text"  name="role_name" lay-verify="required|role_name" placeholder="输入角色名..." autocomplete="off" value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">
+                备注：
+            </label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入角色备注..." class="layui-textarea" name="remark"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">启用状态：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="status" value="1" class="layui-input">
+                <input type="checkbox" checked="" switch="status" lay-skin="switch" lay-filter="switchStatus" lay-text="启用|停用">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button  class="layui-btn" lay-filter="save" lay-submit="">
+                确定保存
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            role_name: function(value){
+                if(value.length < 3){
+                    return '角色名至少得3个字符啊';
+                }
+            }
+        });
+
+        //监听指定开关
+        form.on('switch(switchStatus)', function(data){
+            this.checked ? $("input[name='status']").val(1) : $("input[name='status']").val(0);
+        });
+
+        //监听提交
+        form.on('submit(save)', function(data){
+            var role_id = $("input[name='role_id']").val();
+            var role_name = $("input[name='role_name']").val();
+            var remark = $("textarea[name='remark']").val();
+            var status = $("input[name='status']").val();
+
+            var post_url = "{:url('admin_role/ajaxSaveRole')}";
+            var post_data = {"role_id":role_id,"role_name":role_name,"remark":remark,"status":status};
+            var index = layer.load(1, {
+                shade: [0.5,'#fff'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                type : "POST",
+                url : post_url,
+                data:post_data,
+                dataType:'json',
+                success : function(result){
+                    layer.close(index);
+                    if(result.status == 500){
+                        layer.msg(result.msg, {icon: 5});
+                    }else if(result.status == 200){
+                        layer.msg(result.msg, {icon: 6},function () {
+                            window.location.href = result.referr_url;
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

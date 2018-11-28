@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file="common/header" /}
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+          <a href="{:url('index/welcome')}">控制面板</a>
+          <a href="{:url('admin_admin/adminIndex')}">管理员列表</a>
+          <a><cite>编辑管理员</cite></a>
+      </span>
+</div>
+<div class="x-body">
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>登录账号：
+            </label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="admin_id" value="<?php if(isset($admin_info)):?><?php echo $admin_info['admin_id'];?><?php else:?>0<?php endif;?>" class="layui-input">
+                <input type="text"  name="admin_account" lay-verify="required|admin_account" placeholder="输入登录账号..." autocomplete="off" value="<?php if(isset($admin_info)):?><?php echo $admin_info['admin_account'];?><?php endif;?>" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>真实姓名：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="admin_truename" lay-verify="required" placeholder="输入真实姓名..." autocomplete="off" value="<?php if(isset($admin_info)):?><?php echo $admin_info['admin_truename'];?><?php endif;?>" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>手机：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="admin_mobile_phone" lay-verify="required|phone" placeholder="输入手机号码..." autocomplete="off" value="<?php if(isset($admin_info)):?><?php echo $admin_info['admin_mobile_phone'];?><?php endif;?>" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>邮箱：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="admin_mail" lay-verify="required|email" placeholder="输入邮箱..." autocomplete="off" value="<?php if(isset($admin_info)):?><?php echo $admin_info['admin_mail'];?><?php endif;?>" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>角色：
+            </label>
+            <div class="layui-input-block">
+                <?php if(isset($role)):?>
+                <?php foreach($role as $v):?>
+                <input type="radio" name="role_id" value="<?php echo $v['role_id'];?>" title="<?php echo $v['role_name'];?>" <?php if(isset($admin_info) && $admin_info['role_id'] == $v['role_id']):?>checked="checked"<?php endif;?>>
+                <?php endforeach;?>
+                <?php endif;?>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red"></span>密码：
+            </label>
+            <div class="layui-input-inline">
+                <input type="password" name="password" placeholder="请输入新密码..." lay-verify="password" autocomplete="off" class="layui-input" value="">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                6到12个字符
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red"></span>确认密码：
+            </label>
+            <div class="layui-input-inline">
+                <input type="password" name="rep_password" placeholder="请输入确认密码..." lay-verify="rep_password" autocomplete="off" class="layui-input" value="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">启用状态：</label>
+            <div class="layui-input-block">
+                <input type="hidden" id="status" name="status" value="<?php if(isset($admin_info)):?><?php echo $admin_info['status'];?><?php else:?>0<?php endif;?>" class="layui-input">
+                <input type="checkbox" <?php if(isset($admin_info) && $admin_info['status'] == 1):?>checked=""<?php endif;?> switch="status" lay-skin="switch" lay-filter="switchStatus" lay-text="启用|停用">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button  class="layui-btn" lay-filter="save" lay-submit="">
+                确定保存
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            admin_account: function(value){
+                if(value.length < 6){
+                    return '登录账号至少得6个字符啊';
+                }
+            },
+            password: function (value) {
+                var re = /(.+){6,12}$/;
+                if(value.length > 0 && !re.test(value)){
+                    return '密码必须6到12位';
+                }
+            },
+            rep_password: function(value){
+                if($("input[name='password']").val().length > 0){
+                    if(value != $("input[name='password']").val()){
+                        return '两次密码不一致';
+                    }
+                }
+            }
+        });
+
+        //监听指定开关
+        form.on('switch(switchStatus)', function(data){
+            this.checked ? $("input[name='status']").val(1) : $("input[name='status']").val(0);
+        });
+
+        //监听提交
+        form.on('submit(save)', function(data){
+            var admin_id = $("input[name='admin_id']").val();
+            var admin_account = $("input[name='admin_account']").val();
+            var admin_truename = $("input[name='admin_truename']").val();
+            var admin_mobile_phone = $("input[name='admin_mobile_phone']").val();
+            var admin_mail = $("input[name='admin_mail']").val();
+            var role_id = $("input:radio[name='role_id']:checked").val();
+            var password = $("input[name='password']").val();
+            var status = $("input[name='status']").val();
+
+            var post_url = "{:url('admin_admin/ajaxSaveAdmin')}";
+            var post_data = {"admin_id":admin_id,"admin_account":admin_account,"admin_truename":admin_truename,"admin_mobile_phone":admin_mobile_phone,"admin_mail":admin_mail,"role_id":role_id,"password":password,"status":status};
+            var index = layer.load(1, {
+                shade: [0.5,'#fff'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                type : "POST",
+                url : post_url,
+                data:post_data,
+                dataType:'json',
+                success : function(result){
+                    layer.close(index);
+                    if(result.status == 500){
+                        layer.msg(result.msg, {icon: 5});
+                    }else if(result.status == 200){
+                        layer.msg(result.msg, {icon: 6},function () {
+                            window.location.href = result.referr_url;
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file="common/header" /}
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+          <a href="{:url('index/welcome')}">控制面板</a>
+          <a href="{:url('admin_rule/ruleIndex')}">权限节点</a>
+          <a><cite>添加节点</cite></a>
+      </span>
+</div>
+<div class="x-body">
+    <form class="layui-form layui-form-pane">
+        <?php if(isset($parent_rule_info)):?>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>上级节点：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="pid_rule_name" lay-verify="required|rule_name" placeholder="输入父级节点名称..." autocomplete="off" value="<?php if(isset($parent_rule_info)):?><?php echo $parent_rule_info['rule_name'];?><?php endif;?>" disabled="disabled" class="layui-input">
+            </div>
+        </div>
+        <?php endif;?>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>节点名称：
+            </label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="pid" value="<?php if(isset($parent_rule_info)):?><?php echo $parent_rule_info['rule_id'];?><?php else:?>0<?php endif;?>" class="layui-input">
+                <input type="hidden" name="rule_id" value="0" class="layui-input">
+                <input type="hidden" name="level" value="<?php if(isset($parent_rule_info)):?><?php echo $parent_rule_info['level'] + 1;?><?php else:?>1<?php endif;?>" class="layui-input">
+                <input type="text" name="rule_name" lay-verify="required" placeholder="输入节点名称..." autocomplete="off" value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                模块：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="module" lay-verify="module" placeholder="输入模块名称..." autocomplete="off" value="" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>小写英文字符或下划线
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                控制器：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="controller" lay-verify="controller" placeholder="输入控制器名称..." autocomplete="off" value="" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>小写英文字符或下划线
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                方法：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="action" lay-verify="action" placeholder="输入方法名称..." autocomplete="off" value="" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>小写英文字符或下划线
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                排序：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="list_order" lay-verify="number" placeholder="输入排序..." autocomplete="off" value="0" class="layui-input">
+            </div>
+        </div>
+        <!--只有一级权限才显示是否菜单显示-->
+        <?php if(!isset($parent_rule_info) || $parent_rule_info['level'] == 1):?>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单显示：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="status" value="1" class="layui-input">
+                <input type="checkbox" checked="" switch="status" lay-skin="switch" lay-filter="switchStatus" lay-text="显示|不显示">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                菜单图标：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="icon" placeholder="输入菜单图标..." autocomplete="off" value="" class="layui-input">
+            </div>
+        </div>
+        <?php endif;?>
+        <div class="layui-form-item">
+            <button  class="layui-btn" lay-filter="save" lay-submit="">
+                确定保存
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            module:function (value) {
+                var pid = $("input[name='pid']").val();
+                if(typeof pid != 'undefined' && pid != 0){
+                    var re = /^[a-z_]*$/g;
+                    if(!re.test(value)){
+                        return '小写英文字符或下划线';
+                    }
+                }
+            },
+            controller:function (value) {
+                var pid = $("input[name='pid']").val();
+                if(typeof pid != 'undefined' && pid != 0){
+                    var re = /^[a-z_]*$/g;
+                    if(!re.test(value)){
+                        return '小写英文字符或下划线';
+                    }
+                }
+            },
+            action:function (value) {
+                var pid = $("input[name='pid']").val();
+                if(typeof pid != 'undefined' && pid != 0){
+                    var re = /^[a-z_]*$/g;
+                    if(!re.test(value)){
+                        return '小写英文字符或下划线';
+                    }
+                }
+            }
+        });
+
+        //监听指定开关
+        form.on('switch(switchStatus)', function(data){
+            this.checked ? $("input[name='status']").val(1) : $("input[name='status']").val(0);
+        });
+
+        //监听提交
+        form.on('submit(save)', function(data){
+            var rule_id = $("input[name='rule_id']").val();
+            var level = $("input[name='level']").val();
+            var rule_name = $("input[name='rule_name']").val();
+            var pid = $("input[name='pid']").val();
+            var module = $("input[name='module']").val();
+            var controller = $("input[name='controller']").val();
+            var action = $("input[name='action']").val();
+            var status = $("input[name='status']").val();
+            var icon = $("input[name='icon']").val();
+            var list_order = $("input[name='list_order']").val();
+
+
+            var post_url = "{:url('admin_rule/ajaxSaveRule')}";
+            var post_data = {"rule_id":rule_id,"level":level,"rule_name":rule_name,"pid":pid,"module":module,"controller":controller,"action":action,"status":status,"icon":icon,"list_order":list_order};
+            var index = layer.load(1, {
+                shade: [0.5,'#fff'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                type : "POST",
+                url : post_url,
+                data:post_data,
+                dataType:'json',
+                success : function(result){
+                    layer.close(index);
+                    if(result.status == 500){
+                        layer.msg(result.msg, {icon: 5});
+                    }else if(result.status == 200){
+                        layer.msg(result.msg, {icon: 6},function () {
+                            window.location.href = result.referr_url;
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

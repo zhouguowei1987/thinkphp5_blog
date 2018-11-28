@@ -1,0 +1,23 @@
+<!-- 顶部开始 -->
+<div class="container">
+    <div class="logo"><a href="{:url('index/index')}">XXX-管理系统</a></div>
+    <div class="left_open">
+        <i title="展开左侧栏" class="iconfont">&#xe699;</i>
+    </div>
+    <ul class="layui-nav right" lay-filter="">
+        <li class="layui-nav-item">
+            <a href="javascript:;" id="top_admin_truename">{:session('admin.admin_truename')}</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <dd><a onclick="admin_system_show('{:url(\'common/personalProfile\')}')" href="javascript:;">个人信息</a></dd>
+                <dd><a onclick="admin_system_show('{:url(\'common/changePassword\')}')" href="javascript:;">更改密码</a></dd>
+                <dd><a href="{:url('common/logout')}">退出</a></dd>
+            </dl>
+        </li>
+    </ul>
+</div>
+<script>
+    function admin_system_show(url){
+        $(".x-iframe").attr("src",url);
+    }
+</script>
+<!-- 顶部结束 -->

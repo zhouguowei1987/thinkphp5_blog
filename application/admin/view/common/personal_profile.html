@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file="common/header" /}
+</head>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+          <a href="{:url('index/welcome')}">控制面板</a>
+          <a><cite>个人信息</cite></a>
+      </span>
+</div>
+<body>
+<div class="x-body">
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>登录账号：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="admin_account" lay-verify="required|admin_account" placeholder="输入登录账号..." autocomplete="off" value="<?php if(isset($admin_info)):?><?php echo $admin_info['admin_account'];?><?php endif;?>" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>将会成为您唯一的登入名
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>真实姓名：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="admin_truename" lay-verify="required" placeholder="输入真实姓名..." autocomplete="off" value="<?php if(isset($admin_info)):?><?php echo $admin_info['admin_truename'];?><?php endif;?>" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>手机：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="admin_mobile_phone" lay-verify="required|phone" placeholder="输入手机号码..." autocomplete="off" value="<?php if(isset($admin_info)):?><?php echo $admin_info['admin_mobile_phone'];?><?php endif;?>" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>邮箱：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="admin_mail" lay-verify="required|email" placeholder="输入邮箱..." autocomplete="off" value="<?php if(isset($admin_info)):?><?php echo $admin_info['admin_mail'];?><?php endif;?>" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button  class="layui-btn" lay-filter="save" lay-submit="">
+                确定保存
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            admin_account: function(value){
+                if(value.length < 6){
+                    return '登录账号至少得6个字符啊';
+                }
+            }
+        });
+
+        //监听提交
+        form.on('submit(save)', function(data){
+            var admin_account = $("input[name='admin_account']").val();
+            var admin_truename = $("input[name='admin_truename']").val();
+            var admin_mobile_phone = $("input[name='admin_mobile_phone']").val();
+            var admin_mail = $("input[name='admin_mail']").val();
+
+            var post_url = "{:url('common/personalProfile')}";
+            var post_data = {"admin_account":admin_account,"admin_truename":admin_truename,"admin_mobile_phone":admin_mobile_phone,"admin_mail":admin_mail};
+            var index = layer.load(1, {
+                shade: [0.5,'#fff'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                type : "POST",
+                url : post_url,
+                data:post_data,
+                dataType:'json',
+                success : function(result){
+                    layer.close(index);
+                    if(result.status == 500){
+                        layer.msg(result.msg, {icon: 5});
+                    }else if(result.status == 200){
+                        layer.msg(result.msg, {icon: 6},function () {
+                            //更新一下top的管理员真实姓名
+                            $("#top_admin_truename").text(admin_truename);
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file="common/header" /}
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+          <a href="{:url('index/welcome')}">控制面板</a>
+          <a href="{:url('admin_role/roleIndex')}">角色列表</a>
+          <a><cite>分配权限</cite></a>
+      </span>
+</div>
+<div class="x-body">
+    <form action="" method="post" class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>角色名：
+            </label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="role_id" value="<?php if(isset($role_info)):?><?php echo $role_info['role_id'];?><?php endif;?>" class="layui-input">
+                <input type="text"  name="role_name" placeholder="输入角色名..." autocomplete="off" value="<?php if(isset($role_info)):?><?php echo $role_info['role_name'];?><?php endif;?>" class="layui-input" disabled="disabled">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">
+                拥有权限
+            </label>
+            <table  class="layui-table layui-input-block">
+                <?php if(isset($rule)):?>
+                <tbody>
+                <?php foreach($rule as $v):?>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="rule_id[]" lay-skin="primary" data-level="1" value="<?php echo $v['rule_id'];?>" title="<?php echo $v['rule_name'];?>" <?php if(in_array($v['rule_id'],$role_rule_ids)):?>checked="checked"<?php endif;?>>
+                    </td>
+                    <td>
+                        <?php if(isset($v['son'])):?>
+                        <table  class="layui-table">
+                            <tbody>
+                            <?php foreach($v['son'] as $vv):?>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="rule_id[]" lay-skin="primary" data-level="2" value="<?php echo $vv['rule_id'];?>" title="<?php echo $vv['rule_name'];?>" <?php if(in_array($vv['rule_id'],$role_rule_ids)):?>checked="checked"<?php endif;?>>
+                                </td>
+                                <td>
+                                    <?php if(isset($vv['son'])):?>
+                                    <?php foreach($vv['son'] as $vvv):?>
+                                    <input type="checkbox" name="rule_id[]" lay-skin="primary" data-level="3" value="<?php echo $vvv['rule_id'];?>" title="<?php echo $vvv['rule_name'];?>" <?php if(in_array($vvv['rule_id'],$role_rule_ids)):?>checked="checked"<?php endif;?>>
+                                    <?php endforeach;?>
+                                    <?php endif;?>
+                                </td>
+                            </tr>
+                            <?php endforeach;?>
+                            </tbody>
+                        </table>
+                        <?php endif;?>
+                    </td>
+                </tr>
+                <?php endforeach;?>
+                </tbody>
+                <?php endif;?>
+            </table>
+        </div>
+        <div class="layui-form-item">
+            <button  class="layui-btn" lay-filter="save" lay-submit="">
+                确定保存
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //监听checkbox
+        form.on('checkbox', function(data){
+            var level = $(this).data('level');
+            if(this.checked){
+                switch(level){
+                    case 1:
+                        $(this).parent().next().find("input[type='checkbox']").prop("checked",true);
+                        break;
+                    case 2:
+                        $(this).parent().parent().parent().parent().parent().prev().find("input[type='checkbox']").prop("checked",true);
+                        $(this).parent().next().find("input[type='checkbox']").prop("checked",true);
+                        break;
+                    case 3:
+                        $(this).parent().parent().parent().parent().parent().prev().find("input[type='checkbox']").prop("checked",true);
+                        $(this).parent().prev().find("input[type='checkbox']").prop("checked",true);
+                        break;
+                }
+            }else{
+                switch(level){
+                    case 1:
+                        $(this).parent().next().find("input[type='checkbox']").prop("checked",false);
+                        break;
+                    case 2:
+                        $(this).parent().next().find("input[type='checkbox']").prop("checked",false);
+                        break;
+                }
+            }
+            layui.form.render();
+        });
+
+        //监听提交
+        form.on('submit(save)', function(data){
+            var role_id = $("input[name='role_id']").val();
+            var rule_ids = new Array;
+            $.each($("input[type='checkbox']:checked"),function(i,rule_checkbox){
+                rule_ids.push($(rule_checkbox).val());
+            })
+
+            var post_url = "{:url('admin_role/roleAuthAccess')}";
+            var post_data = {"role_id":role_id,"rule_ids":rule_ids.join(',')};
+            console.log(post_data);
+            var index = layer.load(1, {
+                shade: [0.5,'#fff'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                type : "POST",
+                url : post_url,
+                data:post_data,
+                dataType:'json',
+                success : function(result){
+                    layer.close(index);
+                    if(result.status == 500){
+                        layer.msg(result.msg, {icon: 5});
+                    }else if(result.status == 200){
+                        layer.msg(result.msg, {icon: 6},function () {
+                            window.location.href = result.referr_url;
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
