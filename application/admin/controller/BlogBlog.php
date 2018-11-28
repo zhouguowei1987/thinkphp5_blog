@@ -62,13 +62,13 @@ class BlogBlog extends Base
         }
     }
     /*
-     * ajax启用、停用博文账号
+     * ajax隐藏、显示博文
      */
     public function ajaxUpdateBlogStatus(){
         if(Request::instance()->isAjax()){
             if(Request::instance()->has('blog_id') && Request::instance()->has('status')){
                 $blog_id = Request::instance()->post('blog_id/d');
-                $blogModel = new \app\blog\model\Blog();
+                $blogModel = new \app\admin\model\BlogBlog();
                 $blog_info = $blogModel->getBlogOneByWhere(['blog_id'=>$blog_id]);
                 if(!empty($blog_info)){
                     $where['blog_id'] = $blog_id;
@@ -79,15 +79,15 @@ class BlogBlog extends Base
                     ];
                     if($blogModel->saveBlog($data,$where)){
                         //添加后台行为操作日志
-                        $actionLogModel = new \app\blog\model\BlogActionLog();
+                        $actionLogModel = new \app\admin\model\AdminActionLog();
                         $log_note = '';
                         if($status == 0){
-                            $log_note = '停用博文-'.$blog_info['blog_account'];
+                            $log_note = '隐藏博文-'.$blog_info['blog_title'];
                         }else if($status == 1){
-                            $log_note = '启用博文-'.$blog_info['blog_account'];
+                            $log_note = '显示博文-'.$blog_info['blog_title'];
                         }
                         $actionLogData = [
-                            'blog_id' => Session::get('blog.blog_id'),
+                            'blog_id' => Session::get('admin.admin_id'),
                             'log_note' => $log_note,
                             'log_url' => Request::instance()->url(),
                             'log_data' => serialize($data),
@@ -100,7 +100,7 @@ class BlogBlog extends Base
                         return json(['status'=>500,'msg'=>'操作失败']);
                     }
                 }else{
-                    return json(['status'=>500,'msg'=>'博文信息不存在']);
+                    return json(['status'=>500,'msg'=>'博文不存在']);
                 }
             }else{
                 return json(['status'=>500,'msg'=>'缺少参数']);
