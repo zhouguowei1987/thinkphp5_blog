@@ -61,39 +61,39 @@
                 url: '{:url("blog_blog/ajaxGetBlogList")}',
                 title: '博文管理',
                 cols: [[
-                    {field:'blog_id', title:'ID', align: 'left',fixed: 'left'},
+                    {field:'blog_id', title:'ID',width:80, align: 'center',fixed: 'left'},
                     {field:'blog_title', title:'博文标题', align: 'left',fixed: 'left'},
-                    {field:'category_name', title:'所属分类', align: 'left'},
-                    {field:'blog_views', title:'访问次数', align: 'left'},
-                    {field:'status', title:'显示状态', align: 'center', templet: function(res){
+                    {field:'category_name', title:'所属分类',width:150, align: 'left'},
+                    {field:'blog_views', title:'访问次数',width:100, align: 'center'},
+                    {field:'status', title:'显示状态',width:100, align: 'center', templet: function(res){
                         if(res.status == 1){
-                            return '<span class="layui-btn layui-btn-normal layui-btn-xs td-status">已显示</span>';
+                            return '<span class="layui-btn layui-btn-normal layui-btn-xs layui-btn-radius td-status">已显示</span>';
                         }else if(res.status == 0){
-                            return '<span class="layui-btn layui-btn-disabled layui-btn-xs td-status">已隐藏</span>';
+                            return '<span class="layui-btn layui-btn-disabled layui-btn-xs layui-btn-radius td-status">已隐藏</span>';
                         }
                     }},
-                    {field:'is_index', title:'首页显示', align: 'center', templet: function(res){
+                    {field:'is_index', title:'首页显示',width:100, align: 'center', templet: function(res){
                         if(res.is_index == 1){
-                            return '<span class="layui-btn layui-btn-warm layui-btn-xs">已显示</span>';
+                            return '<span class="layui-btn layui-btn-warm layui-btn-xs layui-btn-radius">已显示</span>';
                         }else if(res.is_index == 0){
-                            return '<span class="layui-btn layui-btn-disabled layui-btn-sm">不显示</span>';
+                            return '<span class="layui-btn layui-btn-disabled layui-btn-sm layui-btn-radius">不显示</span>';
                         }
                     }},
-                    {field:'is_top', title:'置顶', align: 'center', templet: function(res){
+                    {field:'is_top', title:'置顶',width:100, align: 'center', templet: function(res){
                         if(res.is_top == 1){
-                            return '<span class="layui-btn layui-btn-danger layui-btn-xs">已置顶</span>';
+                            return '<span class="layui-btn layui-btn-danger layui-btn-xs layui-btn-radius">已置顶</span>';
                         }else if(res.is_top == 0){
-                            return '<span class="layui-btn layui-btn-disabled layui-btn-xs">未置顶</span>';
+                            return '<span class="layui-btn layui-btn-disabled layui-btn-xs layui-btn-radius">未置顶</span>';
                         }
                     }},
-                    {field:'allow_comment', title:'评论', align: 'center', templet: function(res){
+                    {field:'allow_comment', title:'评论',width:100, align: 'center', templet: function(res){
                         if(res.allow_comment == 1){
-                            return '<span class="layui-btn layui-btn-xs">允许</span>';
+                            return '<span class="layui-btn layui-btn-xs layui-btn-radius">允许</span>';
                         }else if(res.allow_comment == 0){
-                            return '<span class="layui-btn layui-btn-disabled layui-btn-xs">禁止</span>';
+                            return '<span class="layui-btn layui-btn-disabled layui-btn-xs layui-btn-radius">禁止</span>';
                         }
                     }},
-                    {field:'create_time', title:'创建日期', align: 'left'},
+                    {field:'create_time', title:'创建日期',width:200, align: 'left'},
                     {fixed: 'right', title:'操作', align: 'center', templet: function(res){
                         var barManageHtml = '';
                         if(res.status == 1){

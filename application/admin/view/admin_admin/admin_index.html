@@ -80,9 +80,9 @@
                     {field:'login_count', title:'登录次数', align: 'center'},
                     {field:'status', title:'状态', align: 'center', templet: function(res){
                         if(res.status == 1){
-                            return '<span class="layui-btn layui-btn-normal layui-btn-sm td-status">已启用</span>';
+                            return '<span class="layui-btn layui-btn-normal layui-btn-xs layui-btn-radius td-status">已启用</span>';
                         }else if(res.status == 0){
-                            return '<span class="layui-btn layui-btn-normal layui-btn-sm td-status layui-btn-disabled">已停用</span>';
+                            return '<span class="layui-btn layui-btn-disabled layui-btn-xs layui-btn-radius td-status">已停用</span>';
                         }
                     }},
                     {fixed: 'right', title:'操作', align: 'center', templet: function(res){
