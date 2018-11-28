@@ -76,3 +76,5 @@ return [
     'sql_explain'     => false,
     
 ];
+
+5、访问后台地址：域名 + /admin/common/login.html；账号：Function 密码：123456
