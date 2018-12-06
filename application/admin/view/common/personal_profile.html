@@ -4,12 +4,6 @@
 <head>
     {include file="common/header" /}
 </head>
-<div class="x-nav">
-      <span class="layui-breadcrumb">
-          <a href="{:url('index/welcome')}">控制面板</a>
-          <a><cite>个人信息</cite></a>
-      </span>
-</div>
 <body>
 <div class="x-body">
     <form class="layui-form layui-form-pane">
@@ -92,10 +86,9 @@
                     if(result.status == 500){
                         layer.msg(result.msg, {icon: 5});
                     }else if(result.status == 200){
-                        layer.msg(result.msg, {icon: 6},function () {
-                            //更新一下top的管理员真实姓名
-                            $("#top_admin_truename").text(admin_truename);
-                        });
+                        //更新一下top的管理员真实姓名
+                        parent.$("#top_admin_truename").text(admin_truename);
+                        layer.msg(result.msg, {icon: 6});
                     }
                 }
             });

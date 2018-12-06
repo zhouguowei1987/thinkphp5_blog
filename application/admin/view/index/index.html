@@ -14,7 +14,7 @@
         <ul id="nav">
             <?php foreach($menu as $v):?>
             <li>
-                <a _href="<?php if(!isset($v['son'])):?>{:url($v.controller.'/'.$v.action)}<?php else:?>javascript:;<?php endif;?>">
+                <a href="<?php if(!isset($v['son'])):?>{:url($v.controller.'/'.$v.action)}<?php else:?>javascript:;<?php endif;?>">
                     <i class="iconfont"><?php echo $v['icon'];?></i>
                     <cite><?php echo $v['rule_name'];?></cite>
                     <?php if(isset($v['son'])):?>
@@ -57,7 +57,16 @@
 <!-- 左侧菜单结束 -->
 <!-- 右侧主体开始 -->
 <div class="page-content">
-    <iframe src='{:url("index/welcome")}' frameborder="0" scrolling="yes" class="x-iframe" style="width: 100%;height:100%;"></iframe>
+    <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+        <ul class="layui-tab-title">
+            <li class="home"><i class="layui-icon">&#xe68e;</i>控制面板</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <iframe src='{:url("index/welcome")}' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- 右侧主体结束 -->
 <!-- 中部结束 -->

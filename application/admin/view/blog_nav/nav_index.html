@@ -4,17 +4,11 @@
     {include file="common/header" /}
 </head>
 <body>
-<div class="x-nav">
-      <span class="layui-breadcrumb">
-          <a href="{:url('index/welcome')}">控制面板</a>
-          <a><cite>博客导航</cite></a>
-      </span>
-</div>
 <div class="x-body">
 
     <xblock>
         <div class="layui-btn-group">
-            <a class="layui-btn"  href="{:url('blog_nav/navAdd')}?pid=0"><i class="layui-icon">&#xe61f;</i>添加</a>
+            <a class="layui-btn"  href="javascript:;" onclick="x_admin_show('添加导航','{:url(\'blog_nav/navAdd\')}?pid=0',800,600)"><i class="layui-icon">&#xe61f;</i>添加</a>
             <button class="layui-btn layui-btn-warm" onclick="javascript:window.location.reload()"><i class="layui-icon">&#xe669;</i>刷新</button>
         </div>
     </xblock>
@@ -46,8 +40,8 @@
                     <input type="checkbox" name="switch"  lay-text="显示|不显示" <?php if($v['status'] == 1):?>checked="checked"<?php endif;?> data-id="<?php echo $v['nav_id'];?>" lay-filter="switchStatus" lay-skin="switch">
                 </td>
                 <td class="td-manage">
-                    <a class="layui-btn layui-btn-xs layui-btn-radius"  href="{:url('blog_nav/navEdit')}?nav_id=<?php echo $v['nav_id'];?>" ><i class="layui-icon">&#xe642;</i>编辑</a>
-                    <a class="layui-btn layui-btn-warm layui-btn-xs layui-btn-radius" href="{:url('blog_nav/navAdd')}?pid=<?php echo $v['nav_id'];?>" ><i class="layui-icon">&#xe642;</i>添加子栏目</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-radius" href="javascript:;" onclick="x_admin_show('编辑导航','{:url(\'blog_nav/navEdit\')}?nav_id=<?php echo $v['nav_id'];?>',800,600)"><i class="layui-icon">&#xe642;</i>编辑</a>
+                    <a class="layui-btn layui-btn-warm layui-btn-xs layui-btn-radius" href="javascript:;" onclick="x_admin_show('添加子导航','{:url(\'blog_nav/navAdd\')}?pid=<?php echo $v['nav_id'];?>',800,600)"><i class="layui-icon">&#xe642;</i>添加子栏目</a>
                     <button class="layui-btn layui-btn-danger layui-btn-xs layui-btn-radius"  onclick="nav_del('<?php echo $v['nav_id'];?>')"><i class="layui-icon">&#xe640;</i>删除</button>
                 </td>
             </tr>
@@ -67,7 +61,7 @@
                     <input type="checkbox" name="switch"  lay-text="显示|不显示" <?php if($vv['status'] == 1):?>checked="checked"<?php endif;?> data-id="<?php echo $vv['nav_id'];?>" lay-filter="switchStatus" lay-skin="switch">
                 </td>
                 <td class="td-manage">
-                    <a class="layui-btn layui-btn-xs layui-btn-radius"  href="{:url('blog_nav/navEdit')}?nav_id=<?php echo $vv['nav_id'];?>" ><i class="layui-icon">&#xe642;</i>编辑</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-radius" href="javascript:;" onclick="x_admin_show('编辑导航','{:url(\'blog_nav/navEdit\')}?nav_id=<?php echo $vv['nav_id'];?>',800,600)"><i class="layui-icon">&#xe642;</i>编辑</a>
                     <button class="layui-btn layui-btn-danger layui-btn-xs layui-btn-radius"  onclick="nav_del('<?php echo $vv['nav_id'];?>')" ><i class="layui-icon">&#xe640;</i>删除</button>
                 </td>
             </tr>

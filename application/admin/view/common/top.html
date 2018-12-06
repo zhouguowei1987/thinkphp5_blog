@@ -8,16 +8,11 @@
         <li class="layui-nav-item">
             <a href="javascript:;" id="top_admin_truename">{:session('admin.admin_truename')}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                <dd><a onclick="admin_system_show('{:url(\'common/personalProfile\')}')" href="javascript:;">个人信息</a></dd>
-                <dd><a onclick="admin_system_show('{:url(\'common/changePassword\')}')" href="javascript:;">更改密码</a></dd>
+                <dd><a onclick="x_admin_show('个人信息','{:url(\'common/personalProfile\')}',600,400)" href="javascript:;">个人信息</a></dd>
+                <dd><a onclick="x_admin_show('更改密码','{:url(\'common/changePassword\')}',600,400)" href="javascript:;">更改密码</a></dd>
                 <dd><a href="{:url('common/logout')}">退出</a></dd>
             </dl>
         </li>
     </ul>
 </div>
-<script>
-    function admin_system_show(url){
-        $(".x-iframe").attr("src",url);
-    }
-</script>
 <!-- 顶部结束 -->

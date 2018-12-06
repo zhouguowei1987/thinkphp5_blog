@@ -4,12 +4,6 @@
     {include file="common/header" /}
 </head>
 <body>
-<div class="x-nav">
-      <span class="layui-breadcrumb">
-          <a href="{:url('index/welcome')}">控制面板</a>
-          <a><cite>管理员列表</cite></a>
-      </span>
-</div>
 <div class="x-body">
     <form class="layui-form layui-form-pane" id="searchTable">
         <div class="layui-form-item">
@@ -53,7 +47,7 @@
 
     <xblock>
         <div class="layui-btn-group">
-            <a class="layui-btn"  href="{:url('admin_admin/adminAdd')}"><i class="layui-icon">&#xe61f;</i>添加</a>
+            <a class="layui-btn"  href="javascript:;" onclick="x_admin_show('添加管理员','{:url(\'admin_admin/adminAdd\')}',800,600)"><i class="layui-icon">&#xe61f;</i>添加</a>
             <button class="layui-btn layui-btn-warm" onclick="javascript:document.getElementsByClassName('layui-laypage-btn')[0].click();"><i class="layui-icon">&#xe669;</i>刷新</button>
         </div>
     </xblock>
@@ -159,7 +153,7 @@
                         });
                     });
                 } else if(obj.event === 'edit'){
-                    window.location.href = "{:url('admin_admin/adminEdit')}?admin_id="+data.admin_id;
+                    x_admin_show('编辑管理员',"{:url(\'admin_admin/adminEdit\')}?admin_id="+data.admin_id,800,600);
                 }
             });
             var $ = layui.$, active = {
