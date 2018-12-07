@@ -34,7 +34,7 @@
                 导航URL：
             </label>
             <div class="layui-input-inline">
-                <input type="text" name="nav_url" lay-verify="url" placeholder="输入导航URL..." autocomplete="off" value="<?php if(isset($nav_info)):?><?php echo $nav_info['nav_url'];?><?php endif;?>" class="layui-input">
+                <input type="text" name="nav_url" lay-verify="required" placeholder="输入导航URL..." autocomplete="off" value="<?php if(isset($nav_info)):?><?php echo $nav_info['nav_url'];?><?php endif;?>" class="layui-input">
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red">*</span>输入http或https开头的网址

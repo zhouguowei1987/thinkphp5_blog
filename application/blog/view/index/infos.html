@@ -12,38 +12,24 @@
 </header>
 <div class="wrapper">
     <main>
-        <h2 class="place">您现在的位置是：网站首页&gt; <a href="/">内容页</a></h2>
+        <h2 class="place">您现在的位置是：网站首页&gt; <a href="javascript:;">博文详情</a></h2>
         <div class="infosbox">
             <div class="newsview">
-                <h3 class="news_title">制作个人博客，我是这么收费的？</h3>
+                <h3 class="news_title"><?php if(isset($blog_info)):?><?php echo $blog_info['blog_title'];?><?php endif;?></h3>
                 <div class="bloginfo">
                     <ul>
                         <li class="author"> </li>
                         <li class="lmname">博客日记</li>
-                        <li class="timer">2018-07-05</li>
-                        <li class="view"><script src="/e/public/ViewClick/?classid=49&amp;id=884&amp;addclick=1"></script>297人已阅读</li>
+                        <li class="timer"><?php if(isset($blog_info)):?><?php echo $blog_info['create_time'];?><?php endif;?></li>
+                        <li class="view"><?php if(isset($blog_info)):?><?php echo $blog_info['blog_views'];?><?php endif;?>人已阅读</li>
                     </ul>
                 </div>
-                <div class="tags"><a href="/e/tags/?tagname=%B8%F6%C8%CB%B2%A9%BF%CD&amp;tempid=13" target="_blank">个人博客</a> &nbsp; <a href="/e/tags/?tagname=%B5%DB%B9%FAcms&amp;tempid=13" target="_blank">帝国cms</a></div>
-                <div class="news_about"><strong>简介</strong>有人会以为我是"高冷型"，no，错了，我是"好好型"的，从合作开始，我们之间的关系也不仅仅只有交易，在我看来，我们会是朋友。有些微信加了很久的网友，哪怕一句话也没说过，只要我们没有互相拉黑，有时间的见证，我们亦是朋友。</div>
-                <div class="news_con">制作个人博客，我是这么收费的，<br>
-                    <br>
-                    1.FTP上传文件，耗时1-4小时，有些服务器快，上传时间短，但有些慢的，可以上传4小时时间。这期间，断线或者出现一个文件失败会卡半天，于是我会将这些文件移到最后，再重新传，直到全部传进去能够安装。<br>
-                    <br>
-                    2.有时候我也会解析域名，绑定服务器等小问题。因为客户太忙，又完全信任我，把所有账号信息都给我。所以我能做的工作都给做。<br>
-                    <br>
-                    3.模板安装，每一个站长的要求和审美是不一样的，比如有些想改改颜色，改改一些布局，删掉或者增减一些板块。我都一一统计，然后安装调试好。一般这种情况我都是没有加钱的。有时候可能会有更好的展现方式或者调用，我也会将之前做过的网站，默默修改好。所以，我也要求各大站长尽量能保存我的后台账号，便于我修改。<br>
-                    <br>
-                    4.模板安装好了，不仅要进行数据测试，还要将帝国系统默认的一些设置更改了，比如栏目文章存放路径，缓存登录时间和次数增加，上传文件类型增加jpg，默认的关键字词与tag同步，让动态页面支持标签调用等等，这些步骤操作我都是亲力亲为，所以有些自己安装套模板的站长，会说怎么达不到我这样的效果，而且还需要改改那么多。<br>
-                    <br> <img alt="" src="images/3.jpg">
-                    5.对于特别定制的网站页面，价钱是500，当然所有页面我不会拿出来共享，这也是保护网站的设计版权。定制网站，可以是仿站，也可以是原创，提供思路大概布局，订好方案就可以出设计，一般设计时间为两天，确认后到制作周期，会是一周到两周时间。期间随时可以沟通，修改方案。<br>
-                    <br>
-                    6.费用问题，我也是做过了一些调查，才是现在300这个价，不接受讲价。在外行看来，这个价钱贵，对于他们来说就是一个源码的问题，再看第三条和第四条，凭良心说，没有人可以做到我这样的。贵在哪里呢？贵的是专业，贵的是服务。我很感谢做过网站的站长以及我的同行们，他们也时不时会帮我推一些客户过来。还有些朋友，直接给了钱后，一直就没有消息了，我一直都记着，随时听候差遣，总感觉欠了什么。<br>
-                    <br>
-                    7.有人会以为我是"高冷型"，no，错了，我是"好好型"的，只要是合理的，我可以做到的，我都可以修改，直到满意。我不怕麻烦，就怕大家说不喜欢我做的模板。从合作开始，我们之间的关系也不仅仅只有交易，在我看来，我们会是朋友。有些微信加了很久的网友，哪怕一句话也没说过，只要我们没有互相拉黑，有时间的见证，我们亦是朋友。<br>
-                    <br>
-                    <img alt="" src="images/1.jpg"> </div>
-            </div>
+                <div class="tags">
+                    <a href="/e/tags/?tagname=%B8%F6%C8%CB%B2%A9%BF%CD&amp;tempid=13" target="_blank">个人博客</a>
+                    <a href="/e/tags/?tagname=%B5%DB%B9%FAcms&amp;tempid=13" target="_blank">帝国cms</a>
+                </div>
+                <div class="news_about"><strong>简介</strong><?php if(isset($blog_info)):?><?php echo $blog_info['blog_description'];?><?php endif;?></div>
+                <div class="news_con"><?php if(isset($blog_info)):?><?php echo $blog_info['blog_detail'];?><?php endif;?></div>
             <div class="share">
                 <p class="diggit"><a href="JavaScript:makeRequest('/e/public/digg/?classid=49&amp;id=884&amp;dotop=1&amp;doajax=1&amp;ajaxarea=diggnum','EchoReturnedText','GET','');"> 很赞哦！ </a>(<b id="diggnum"><script type="text/javascript" src="/e/public/ViewClick/?classid=49&amp;id=884&amp;down=5"></script>19</b>)</p>
             </div>

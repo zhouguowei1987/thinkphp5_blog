@@ -69,6 +69,15 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
+                            <label class="layui-form-label">tag标签：</label>
+                            <div class="layui-input-inline">
+                                <input type="type" name="blog_tags" placeholder="多个标签之间用“,”分隔，最多不超过10个..." value="<?php if(isset($blog_info)):?><?php echo $blog_info['blog_tags'];?><?php endif;?>" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">
+                                <button type="button" class="layui-btn layui-btn-normal layui-btn-xs layui-btn-radius">插入已有标签</button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
                             <label class="layui-form-label">博文类型：</label>
                             <div class="layui-input-block">
                                 <input type="hidden" name="blog_type" value="<?php if(isset($blog_info)):?><?php echo $blog_info['blog_type'];?><?php endif;?>" class="layui-input">

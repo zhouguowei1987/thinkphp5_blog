@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file="common/header" /}
+</head>
+
+<body>
+<div class="x-body">
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>标签名称：
+            </label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="tag_id" value="<?php if(isset($tag_info)):?><?php echo $tag_info['tag_id'];?><?php else:?>0<?php endif;?>" class="layui-input">
+                <input type="text"  name="tag_name" lay-verify="required" placeholder="输入标签名称..." autocomplete="off" value="<?php if(isset($tag_info)):?><?php echo $tag_info['tag_name'];?><?php endif;?>" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">启用状态：</label>
+            <div class="layui-input-block">
+                <input type="hidden" id="status" name="status" value="<?php if(isset($tag_info)):?><?php echo $tag_info['status'];?><?php endif;?>" class="layui-input">
+                <input type="checkbox" <?php if(isset($tag_info) && $tag_info['status'] == 1):?>checked=""<?php endif;?> switch="status" lay-skin="switch" lay-filter="switchStatus" lay-text="启用|停用">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button  class="layui-btn" lay-filter="save" lay-submit="">
+                确定保存
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //监听指定开关
+        form.on('switch(switchStatus)', function(data){
+            this.checked ? $("input[name='status']").val(1) : $("input[name='status']").val(0);
+        });
+
+        //监听提交
+        form.on('submit(save)', function(data){
+            var tag_id = $("input[name='tag_id']").val();
+            var tag_name = $("input[name='tag_name']").val();
+            var status = $("input[name='status']").val();
+
+            var post_url = "{:url('blog_tag/ajaxSaveTag')}";
+            var post_data = {"tag_id":tag_id,"tag_name":tag_name,"status":status};
+            var index = layer.load(1, {
+                shade: [0.5,'#fff'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                type : "POST",
+                url : post_url,
+                data:post_data,
+                dataType:'json',
+                success : function(result){
+                    layer.close(index);
+                    if(result.status == 500){
+                        layer.msg(result.msg, {icon: 5});
+                    }else if(result.status == 200){
+                        layer.msg(result.msg, {icon: 6},function () {
+                            window.location.href = result.referr_url;
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
