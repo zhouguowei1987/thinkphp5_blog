@@ -143,13 +143,9 @@
                 reload: function(){
                     var where = {};
                     var tag_name = $("input[name='tag_name']").val();
-                    if(typeof tag_name != 'undefined' && tag_name != ''){
-                        where.tag_name = tag_name;
-                    }
+                    where.tag_name = tag_name;
                     var status = $("select[name='status']").val();
-                    if(typeof status != 'undefined' && status != ''){
-                        where.status = status;
-                    }
+                    where.status = status;
                     table.reload('tableReload', {
                         page: {
                             curr: 1

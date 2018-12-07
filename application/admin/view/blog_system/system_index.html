@@ -152,17 +152,11 @@
                 reload: function(){
                     var where = {};
                     var system_name = $("input[name='system_name']").val();
-                    if(typeof system_name != 'undefined' && system_name != ''){
-                        where.system_name = system_name;
-                    }
+                    where.system_name = system_name;
                     var system_code = $("input[name='system_code']").val();
-                    if(typeof system_code != 'undefined' && system_code != ''){
-                        where.system_code = system_code;
-                    }
+                    where.system_code = system_code;
                     var status = $("select[name='status']").val();
-                    if(typeof status != 'undefined' && status != ''){
-                        where.status = status;
-                    }
+                    where.status = status;
                     table.reload('tableReload', {
                         page: {
                             curr: 1

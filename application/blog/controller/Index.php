@@ -24,13 +24,13 @@ class Index extends Controller
     public function seo(){
         $systemModel = new \app\blog\model\BlogSystem();
 
-        $system_blog_name = $systemModel->getSystemOneByWhere(['system_name'=>'blog_name']);
+        $system_blog_name = $systemModel->getSystemOneByWhere(['system_code'=>'blog_name','status'=>1]);
         $seo['blog_name'] = !empty($system_blog_name) ? $system_blog_name['system_value'] : '';
 
-        $system_blog_keywords = $systemModel->getSystemOneByWhere(['system_name'=>'blog_keywords']);
+        $system_blog_keywords = $systemModel->getSystemOneByWhere(['system_code'=>'blog_keywords','status'=>1]);
         $seo['blog_keywords'] = !empty($system_blog_keywords) ? $system_blog_keywords['system_value'] : '';
 
-        $system_blog_description = $systemModel->getSystemOneByWhere(['system_name'=>'blog_description']);
+        $system_blog_description = $systemModel->getSystemOneByWhere(['system_code'=>'blog_description','status'=>1]);
         $seo['blog_description'] = !empty($system_blog_description) ? $system_blog_description['system_value'] : '';
         $this->assign('seo',$seo);
     }
