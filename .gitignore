@@ -3,4 +3,5 @@ runtime
 .idea
 composer.lock
 *.log
-thinkphp
+uploads
+config
