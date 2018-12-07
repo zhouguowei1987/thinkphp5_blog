@@ -17,11 +17,11 @@
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">
-                    博文分类：
+                    标签状态：
                 </label>
                 <div class="layui-input-inline">
                     <select name="status">
-                        <option value="">==标签状态==</option>
+                        <option value="2">==标签状态==</option>
                         <option value="1">已启用</option>
                         <option value="0">已禁用</option>
                     </select>
@@ -52,8 +52,9 @@
                 url: '{:url("blog_tag/ajaxGetTagList")}',
                 title: '博客标签',
                 cols: [[
+                    {field:'tag_id', title:'ID',width:80, align: 'center',fixed: 'left'},
                     {field:'tag_name', title:'标签名称', align: 'left',fixed: 'left'},
-                    {field:'status', title:'状态', align: 'center', templet: function(res){
+                    {field:'status', title:'显示状态',width:100, align: 'center', templet: function(res){
                         if(res.status == 1){
                             return '<span class="layui-btn layui-btn-normal layui-btn-xs layui-btn-radius td-status">已启用</span>';
                         }else if(res.status == 0){
@@ -142,10 +143,11 @@
                 reload: function(){
                     var where = {};
                     var tag_name = $("input[name='tag_name']").val();
-                    where.tag_name = tag_name;
-
-                    var status = $("input[name='status']").val();
-                    if(status.length > 0){
+                    if(typeof tag_name != 'undefined' && tag_name != ''){
+                        where.tag_name = tag_name;
+                    }
+                    var status = $("select[name='status']").val();
+                    if(typeof status != 'undefined' && status != ''){
                         where.status = status;
                     }
                     table.reload('tableReload', {

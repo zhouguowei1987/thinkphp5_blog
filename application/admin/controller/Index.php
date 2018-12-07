@@ -38,7 +38,7 @@ class Index extends Base
                 $rule_ids[] = $v['rule_id'];
             }
             //根据权限节点，得到权限节点详情
-            $rule = $ruleModel->getRuleMultipleByWhere(['rule_id'=>['IN',$rule_ids],'status'=>1],'list_order DESC');
+            $rule = $ruleModel->getRuleMultipleByWhere(['rule_id'=>['IN',$rule_ids],'status'=>1],'list_order ASC');
             $result = getTree($rule,0,'pid','rule_id');
         }
         return $result;

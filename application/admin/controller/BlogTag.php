@@ -38,7 +38,7 @@ class BlogTag extends Base
             }
             if(Request::instance()->has('status')) {
                 $status = Request::instance()->get('status/d');
-                if (!empty($status)) {
+                if($status != 2){
                     $where['status'] = $status;
                 }
             }
@@ -133,16 +133,24 @@ class BlogTag extends Base
             $tagModel = new \app\admin\model\BlogTag();
             $tag_info = $tagModel->getTagOneByWhere(['tag_id'=>$tag_id]);
             $where = [];
-            $tag_name = Request::instance()->post('tag_name/s');
+            $tag_name = str_replace([' '],'',Request::instance()->post('tag_name/s'));
             $status = Request::instance()->post('status/d');
             $data = [
                 'tag_name' => $tag_name,
                 'status' => $status,
                 'update_time' => time()
             ];
+            //查看标签名称是否可用
+            $name_tag_info = $tagModel->getTagOneByWhere(['tag_name'=>$tag_name]);
             if(!empty($tag_info)){
+                if(!empty($name_tag_info) && $name_tag_info['tag_id'] != $tag_id){
+                    return json(['status'=>500,'msg'=>'标签名称已存在，不可使用']);
+                }
                 $where['tag_id'] = $tag_id;
             }else{
+                if(!empty($name_tag_info)){
+                    return json(['status'=>500,'msg'=>'标签已存在无需重复添加']);
+                }
                 $data['create_time'] = time();
             }
             if($result_tag_id = $tagModel->saveTag($data,$where)){
