@@ -10,26 +10,26 @@
     <form class="layui-form layui-form-pane">
         <div class="layui-form-item">
             <label class="layui-form-label">
-                <span class="x-red">*</span>博客名称：
+                <span class="x-red">*</span>配置项名称：
             </label>
             <div class="layui-input-inline">
-                <input type="text"  name="blog_name" lay-verify="required" placeholder="输入博客名称..." autocomplete="off" value="<?php if(isset($blog_system)):?><?php echo $blog_system['blog_name'];?><?php endif;?>" class="layui-input">
+                <input type="hidden" name="system_id" value="0" class="layui-input">
+                <input type="text"  name="system_name" lay-verify="required" placeholder="输入配置项名称..." autocomplete="off" value="" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">
-                <span class="x-red">*</span>关键字：
+                <span class="x-red">*</span>配置项code：
             </label>
             <div class="layui-input-inline">
-                <input type="text" name="blog_keywords" lay-verify="required" placeholder="输入关键字（英文逗号分隔）..." autocomplete="off" value="<?php if(isset($blog_system)):?><?php echo $blog_system['blog_keywords'];?><?php endif;?>" class="layui-input">
+                <input type="text"  name="system_code" lay-verify="required" placeholder="输入配置项code..." autocomplete="off" value="" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">
-                <span class="x-red">*</span>博客描述：
-            </label>
+        <div class="layui-form-item">
+            <label class="layui-form-label">启用状态：</label>
             <div class="layui-input-block">
-                <textarea name="blog_description" lay-verify="required" placeholder="输入描述..." autocomplete="off" value="" class="layui-textarea"><?php if(isset($blog_system)):?><?php echo $blog_system['blog_description'];?><?php endif;?></textarea>
+                <input type="hidden" id="status" name="status" value="1" class="layui-input">
+                <input type="checkbox" checked="" switch="status" lay-skin="switch" lay-filter="switchStatus" lay-text="启用|停用">
             </div>
         </div>
         <div class="layui-form-item">
@@ -45,14 +45,20 @@
         var form = layui.form
             ,layer = layui.layer;
 
+        //监听指定开关
+        form.on('switch(switchStatus)', function(data){
+            this.checked ? $("input[name='status']").val(1) : $("input[name='status']").val(0);
+        });
+
         //监听提交
         form.on('submit(save)', function(data){
-            var blog_name = $("input[name='blog_name']").val();
-            var blog_keywords = $("input[name='blog_keywords']").val();
-            var blog_description = $("textarea[name='blog_description']").val();
+            var system_id = $("input[name='system_id']").val();
+            var system_name = $("input[name='system_name']").val();
+            var system_code = $("input[name='system_code']").val();
+            var status = $("input[name='status']").val();
 
-            var post_url = "{:url('blog_system/info')}";
-            var post_data = {"blog_name":blog_name,"blog_keywords":blog_keywords,"blog_description":blog_description};
+            var post_url = "{:url('blog_system/ajaxSaveSystem')}";
+            var post_data = {"system_id":system_id,"system_name":system_name,"system_code":system_code,"status":status};
             var index = layer.load(1, {
                 shade: [0.5,'#fff'] //0.1透明度的白色背景
             });

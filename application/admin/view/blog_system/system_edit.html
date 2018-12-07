@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file="common/header" /}
+</head>
+
+<body>
+<div class="x-body">
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>配置项名称：
+            </label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="system_id" value="<?php if(isset($system_info)):?><?php echo $system_info['system_id'];?><?php else:?>0<?php endif;?>" class="layui-input">
+                <input type="text"  name="system_name" lay-verify="required" placeholder="输入配置项名称..." autocomplete="off" value="<?php if(isset($system_info)):?><?php echo $system_info['system_name'];?><?php endif;?>" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>配置项code：
+            </label>
+            <div class="layui-input-inline">
+                <input type="text"  name="system_code" lay-verify="required" placeholder="输入配置项code..." autocomplete="off" value="<?php if(isset($system_info)):?><?php echo $system_info['system_code'];?><?php endif;?>" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">启用状态：</label>
+            <div class="layui-input-block">
+                <input type="hidden" id="status" name="status" value="<?php if(isset($system_info)):?><?php echo $system_info['status'];?><?php endif;?>" class="layui-input">
+                <input type="checkbox" <?php if(isset($system_info) && $system_info['status'] == 1):?>checked=""<?php endif;?> switch="status" lay-skin="switch" lay-filter="switchStatus" lay-text="启用|停用">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button  class="layui-btn" lay-filter="save" lay-submit="">
+                确定保存
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //监听指定开关
+        form.on('switch(switchStatus)', function(data){
+            this.checked ? $("input[name='status']").val(1) : $("input[name='status']").val(0);
+        });
+
+        //监听提交
+        form.on('submit(save)', function(data){
+            var system_id = $("input[name='system_id']").val();
+            var system_name = $("input[name='system_name']").val();
+            var system_code = $("input[name='system_code']").val();
+            var status = $("input[name='status']").val();
+
+            var post_url = "{:url('blog_system/ajaxSaveSystem')}";
+            var post_data = {"system_id":system_id,"system_name":system_name,"system_code":system_code,"status":status};
+            var index = layer.load(1, {
+                shade: [0.5,'#fff'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                type : "POST",
+                url : post_url,
+                data:post_data,
+                dataType:'json',
+                success : function(result){
+                    layer.close(index);
+                    if(result.status == 500){
+                        layer.msg(result.msg, {icon: 5});
+                    }else if(result.status == 200){
+                        layer.msg(result.msg, {icon: 6},function () {
+                            window.location.href = result.referr_url;
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: 周国伟
  * Date: 2018/11/23
- * Time: 15:59
+ * Time: 16:56
  */
 
 namespace app\admin\model;
@@ -13,6 +13,20 @@ use think\Db;
 
 class BlogSystem extends Model
 {
+    /*
+     * 获取博客配置列表
+     * @param $offset
+     * @param $limit
+     * @param $where
+     */
+    public function getBlogSystemList($offset,$limit,$where){
+        $iTotalCount = Db::name('blog_system')->where($where)->count();
+        $iTotalRecords = Db::name('blog_system')->where($where)->limit($offset, $limit)->order('system_id DESC')->select();
+        $result = [];
+        $result['iTotalCount'] = $iTotalCount;
+        $result['iTotalRecords'] = $iTotalRecords;
+        return $result;
+    }
     /*
      * 根据条件获取一条博客配置信息
      */
@@ -46,6 +60,26 @@ class BlogSystem extends Model
             }
             Db::commit();
             return isset($system_id) ? $system_id : true;
+        }catch (Exception $e){
+            DB::rollback();
+            return false;
+        }
+    }
+    /*
+     * 删除博客配置
+     * @param $where
+     */
+    public function deleteBlog($where = []){
+        DB::startTrans();
+        if(empty($where)){
+            return false;
+        }
+        try{
+            if(Db::name('blog')->where($where)->delete() === false){
+                throw new Exception('删除博客配置失败');
+            }
+            Db::commit();
+            return true;
         }catch (Exception $e){
             DB::rollback();
             return false;
