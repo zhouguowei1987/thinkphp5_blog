@@ -19,9 +19,9 @@ class BlogSystem extends Model
      * @param $limit
      * @param $where
      */
-    public function getBlogSystemList($offset,$limit,$where){
+    public function getSystemList($offset,$limit,$where){
         $iTotalCount = Db::name('blog_system')->where($where)->count();
-        $iTotalRecords = Db::name('blog_system')->where($where)->limit($offset, $limit)->order('system_id DESC')->select();
+        $iTotalRecords = Db::name('blog_system')->where($where)->limit($offset, $limit)->order('system_id ASC')->select();
         $result = [];
         $result['iTotalCount'] = $iTotalCount;
         $result['iTotalRecords'] = $iTotalRecords;
@@ -60,26 +60,6 @@ class BlogSystem extends Model
             }
             Db::commit();
             return isset($system_id) ? $system_id : true;
-        }catch (Exception $e){
-            DB::rollback();
-            return false;
-        }
-    }
-    /*
-     * 删除博客配置
-     * @param $where
-     */
-    public function deleteBlog($where = []){
-        DB::startTrans();
-        if(empty($where)){
-            return false;
-        }
-        try{
-            if(Db::name('blog')->where($where)->delete() === false){
-                throw new Exception('删除博客配置失败');
-            }
-            Db::commit();
-            return true;
         }catch (Exception $e){
             DB::rollback();
             return false;

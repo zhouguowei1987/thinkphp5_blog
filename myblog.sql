@@ -10,10 +10,34 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-12-07 14:01:18
+Date: 2018-12-07 18:03:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `zgw_ad`
+-- ----------------------------
+DROP TABLE IF EXISTS `zgw_ad`;
+CREATE TABLE `zgw_ad` (
+  `ad_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ad_name` varchar(60) NOT NULL COMMENT '广告名',
+  `position_id` int(8) NOT NULL DEFAULT '0' COMMENT '广告位id',
+  `ad_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1图片广告 2文字广告',
+  `ad_image` varchar(255) NOT NULL COMMENT 'ad_type = 1 广告位图片',
+  `ad_image_open_url` varchar(200) DEFAULT NULL COMMENT 'ad_type = 1 图片广告链接地址',
+  `ad_text` varchar(255) NOT NULL COMMENT 'ad_type = 2文字广告内容',
+  `listorder` tinyint(4) NOT NULL DEFAULT '0' COMMENT '排序',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1可用 0停用',
+  `create_time` int(10) NOT NULL,
+  `update_time` int(10) NOT NULL,
+  PRIMARY KEY (`ad_id`),
+  KEY `catid` (`position_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='广告表';
+
+-- ----------------------------
+-- Records of zgw_ad
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `zgw_admin`
@@ -61,7 +85,7 @@ CREATE TABLE `zgw_admin_action_log` (
   `log_create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '执行行为的时间',
   PRIMARY KEY (`log_id`),
   KEY `log_id` (`log_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=252 DEFAULT CHARSET=utf8 COMMENT='行为日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=277 DEFAULT CHARSET=utf8 COMMENT='行为日志表';
 
 -- ----------------------------
 -- Records of zgw_admin_action_log
@@ -317,6 +341,31 @@ INSERT INTO `zgw_admin_action_log` VALUES ('248', '1', '添加权限节点-编�
 INSERT INTO `zgw_admin_action_log` VALUES ('249', '1', '添加权限节点-禁用配置', '/admin/admin_rule/ajaxSaveRule.html', 'a:11:{s:5:\"level\";i:3;s:9:\"rule_name\";s:12:\"禁用配置\";s:3:\"pid\";i:18;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:11:\"blog_system\";s:6:\"action\";s:21:\"ajaxupdatesystemtatus\";s:6:\"status\";i:0;s:4:\"icon\";s:0:\"\";s:10:\"list_order\";i:0;s:11:\"update_time\";i:1544160952;s:11:\"create_time\";i:1544160952;}', '2130706433', '1544160952');
 INSERT INTO `zgw_admin_action_log` VALUES ('250', '1', '角色分配权限-超级管理员', '/admin/admin_role/roleAuthAccess.html', 'a:35:{i:0;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"2\";}i:1;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"3\";}i:2;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"4\";}i:3;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"6\";}i:4;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"15\";}i:5;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"7\";}i:6;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"8\";}i:7;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"9\";}i:8;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"10\";}i:9;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"11\";}i:10;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"12\";}i:11;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"22\";}i:12;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"13\";}i:13;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"14\";}i:14;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"17\";}i:15;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"19\";}i:16;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"21\";}i:17;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"23\";}i:18;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"20\";}i:19;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"18\";}i:20;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"38\";}i:21;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"36\";}i:22;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"37\";}i:23;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"24\";}i:24;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"25\";}i:25;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"26\";}i:26;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"27\";}i:27;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"32\";}i:28;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"33\";}i:29;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"34\";}i:30;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"35\";}i:31;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"28\";}i:32;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"29\";}i:33;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"30\";}i:34;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"31\";}}', '2130706433', '1544160961');
 INSERT INTO `zgw_admin_action_log` VALUES ('251', '1', '编辑博客配置-博客SEO描述', '/admin/blog_system/ajaxSaveSystem.html', 'a:4:{s:11:\"system_name\";s:15:\"博客SEO描述\";s:11:\"system_code\";s:16:\"blog_description\";s:6:\"status\";i:1;s:11:\"update_time\";i:1544161845;}', '2130706433', '1544161845');
+INSERT INTO `zgw_admin_action_log` VALUES ('252', '1', '编辑博客配置-博客SEO描述', '/admin/blog_system/ajaxSaveSystem.html', 'a:5:{s:11:\"system_name\";s:15:\"博客SEO描述\";s:11:\"system_code\";s:16:\"blog_description\";s:12:\"system_value\";s:0:\"\";s:6:\"status\";i:1;s:11:\"update_time\";i:1544169531;}', '2130706433', '1544169531');
+INSERT INTO `zgw_admin_action_log` VALUES ('253', '1', '编辑博客配置-博客SEO描述', '/admin/blog_system/ajaxSaveSystem.html', 'a:5:{s:11:\"system_name\";s:15:\"博客SEO描述\";s:11:\"system_code\";s:16:\"blog_description\";s:12:\"system_value\";s:189:\"周国伟的php博客,个人技术博客,分享免费个人博客模板,开源一些thinkphp,laravel相关的博客系统项目,bjy,blog和bjy,admin官网,写一些技术文章设计模式.\";s:6:\"status\";i:1;s:11:\"update_time\";i:1544169639;}', '2130706433', '1544169639');
+INSERT INTO `zgw_admin_action_log` VALUES ('254', '1', '添加博客配置-网站ICP', '/admin/blog_system/ajaxSaveSystem.html', 'a:6:{s:11:\"system_name\";s:9:\"网站ICP\";s:11:\"system_code\";s:8:\"site_icp\";s:12:\"system_value\";s:20:\"豫ICP备18042601号\";s:6:\"status\";i:1;s:11:\"update_time\";i:1544169705;s:11:\"create_time\";i:1544169705;}', '2130706433', '1544169705');
+INSERT INTO `zgw_admin_action_log` VALUES ('255', '1', '添加权限节点-广告管理', '/admin/admin_rule/ajaxSaveRule.html', 'a:11:{s:5:\"level\";i:1;s:9:\"rule_name\";s:12:\"广告管理\";s:3:\"pid\";i:0;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:0:\"\";s:6:\"action\";s:0:\"\";s:6:\"status\";i:1;s:4:\"icon\";s:8:\"&#xe653;\";s:10:\"list_order\";i:0;s:11:\"update_time\";i:1544170031;s:11:\"create_time\";i:1544170031;}', '2130706433', '1544170031');
+INSERT INTO `zgw_admin_action_log` VALUES ('256', '1', '编辑权限节点-广告管理', '/admin/admin_rule/ajaxSaveRule.html', 'a:10:{s:5:\"level\";i:1;s:9:\"rule_name\";s:12:\"广告管理\";s:3:\"pid\";i:0;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:0:\"\";s:6:\"action\";s:0:\"\";s:6:\"status\";i:1;s:4:\"icon\";s:8:\"&#xe653;\";s:10:\"list_order\";i:5;s:11:\"update_time\";i:1544170047;}', '2130706433', '1544170047');
+INSERT INTO `zgw_admin_action_log` VALUES ('257', '1', '添加权限节点-广告位列表', '/admin/admin_rule/ajaxSaveRule.html', 'a:11:{s:5:\"level\";i:2;s:9:\"rule_name\";s:15:\"广告位列表\";s:3:\"pid\";i:39;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:11:\"ad_position\";s:6:\"action\";s:13:\"positionindex\";s:6:\"status\";i:1;s:4:\"icon\";s:0:\"\";s:10:\"list_order\";i:0;s:11:\"update_time\";i:1544170122;s:11:\"create_time\";i:1544170122;}', '2130706433', '1544170122');
+INSERT INTO `zgw_admin_action_log` VALUES ('258', '1', '添加权限节点-添加广告位', '/admin/admin_rule/ajaxSaveRule.html', 'a:11:{s:5:\"level\";i:3;s:9:\"rule_name\";s:15:\"添加广告位\";s:3:\"pid\";i:40;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:11:\"ad_position\";s:6:\"action\";s:11:\"positionadd\";s:6:\"status\";i:0;s:4:\"icon\";s:0:\"\";s:10:\"list_order\";i:0;s:11:\"update_time\";i:1544170170;s:11:\"create_time\";i:1544170170;}', '2130706433', '1544170170');
+INSERT INTO `zgw_admin_action_log` VALUES ('259', '1', '添加权限节点-编辑广告位', '/admin/admin_rule/ajaxSaveRule.html', 'a:11:{s:5:\"level\";i:3;s:9:\"rule_name\";s:15:\"编辑广告位\";s:3:\"pid\";i:40;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:11:\"ad_position\";s:6:\"action\";s:12:\"positionedit\";s:6:\"status\";i:0;s:4:\"icon\";s:0:\"\";s:10:\"list_order\";i:0;s:11:\"update_time\";i:1544170208;s:11:\"create_time\";i:1544170208;}', '2130706433', '1544170208');
+INSERT INTO `zgw_admin_action_log` VALUES ('260', '1', '添加权限节点-禁用广告位', '/admin/admin_rule/ajaxSaveRule.html', 'a:11:{s:5:\"level\";i:3;s:9:\"rule_name\";s:15:\"禁用广告位\";s:3:\"pid\";i:40;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:11:\"ad_position\";s:6:\"action\";s:24:\"ajaxupdatepositionstatus\";s:6:\"status\";i:0;s:4:\"icon\";s:0:\"\";s:10:\"list_order\";i:0;s:11:\"update_time\";i:1544170267;s:11:\"create_time\";i:1544170267;}', '2130706433', '1544170267');
+INSERT INTO `zgw_admin_action_log` VALUES ('261', '1', '角色分配权限-超级管理员', '/admin/admin_role/roleAuthAccess.html', 'a:40:{i:0;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"2\";}i:1;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"3\";}i:2;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"4\";}i:3;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"6\";}i:4;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"15\";}i:5;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"7\";}i:6;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"8\";}i:7;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"9\";}i:8;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"10\";}i:9;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"11\";}i:10;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"12\";}i:11;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"22\";}i:12;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"13\";}i:13;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"14\";}i:14;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"17\";}i:15;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"19\";}i:16;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"20\";}i:17;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"21\";}i:18;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"23\";}i:19;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"18\";}i:20;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"36\";}i:21;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"37\";}i:22;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"38\";}i:23;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"24\";}i:24;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"25\";}i:25;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"26\";}i:26;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"27\";}i:27;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"32\";}i:28;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"35\";}i:29;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"34\";}i:30;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"33\";}i:31;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"28\";}i:32;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"29\";}i:33;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"30\";}i:34;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"31\";}i:35;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"39\";}i:36;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"40\";}i:37;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"43\";}i:38;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"42\";}i:39;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"41\";}}', '2130706433', '1544170276');
+INSERT INTO `zgw_admin_action_log` VALUES ('262', '1', '编辑权限节点-广告管理', '/admin/admin_rule/ajaxSaveRule.html', 'a:10:{s:5:\"level\";i:1;s:9:\"rule_name\";s:12:\"广告管理\";s:3:\"pid\";i:0;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:0:\"\";s:6:\"action\";s:0:\"\";s:6:\"status\";i:1;s:4:\"icon\";s:8:\"&#xe6a8;\";s:10:\"list_order\";i:5;s:11:\"update_time\";i:1544170328;}', '2130706433', '1544170328');
+INSERT INTO `zgw_admin_action_log` VALUES ('263', '1', '添加权限节点-广告列表', '/admin/admin_rule/ajaxSaveRule.html', 'a:11:{s:5:\"level\";i:2;s:9:\"rule_name\";s:12:\"广告列表\";s:3:\"pid\";i:39;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:5:\"ad_ad\";s:6:\"action\";s:7:\"adindex\";s:6:\"status\";i:1;s:4:\"icon\";s:0:\"\";s:10:\"list_order\";i:0;s:11:\"update_time\";i:1544170376;s:11:\"create_time\";i:1544170376;}', '2130706433', '1544170376');
+INSERT INTO `zgw_admin_action_log` VALUES ('264', '1', '添加权限节点-添加广告', '/admin/admin_rule/ajaxSaveRule.html', 'a:11:{s:5:\"level\";i:3;s:9:\"rule_name\";s:12:\"添加广告\";s:3:\"pid\";i:44;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:5:\"ad_ad\";s:6:\"action\";s:5:\"adadd\";s:6:\"status\";i:0;s:4:\"icon\";s:0:\"\";s:10:\"list_order\";i:0;s:11:\"update_time\";i:1544170411;s:11:\"create_time\";i:1544170411;}', '2130706433', '1544170411');
+INSERT INTO `zgw_admin_action_log` VALUES ('265', '1', '添加权限节点-编辑广告', '/admin/admin_rule/ajaxSaveRule.html', 'a:11:{s:5:\"level\";i:3;s:9:\"rule_name\";s:12:\"编辑广告\";s:3:\"pid\";i:44;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:5:\"ad_ad\";s:6:\"action\";s:6:\"adedit\";s:6:\"status\";i:0;s:4:\"icon\";s:0:\"\";s:10:\"list_order\";i:0;s:11:\"update_time\";i:1544170433;s:11:\"create_time\";i:1544170433;}', '2130706433', '1544170433');
+INSERT INTO `zgw_admin_action_log` VALUES ('266', '1', '添加权限节点-禁用广告', '/admin/admin_rule/ajaxSaveRule.html', 'a:11:{s:5:\"level\";i:3;s:9:\"rule_name\";s:12:\"禁用广告\";s:3:\"pid\";i:44;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:5:\"ad_ad\";s:6:\"action\";s:18:\"ajaxupdateadstatus\";s:6:\"status\";i:0;s:4:\"icon\";s:0:\"\";s:10:\"list_order\";i:0;s:11:\"update_time\";i:1544170466;s:11:\"create_time\";i:1544170466;}', '2130706433', '1544170466');
+INSERT INTO `zgw_admin_action_log` VALUES ('267', '1', '角色分配权限-超级管理员', '/admin/admin_role/roleAuthAccess.html', 'a:44:{i:0;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"2\";}i:1;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"3\";}i:2;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"15\";}i:3;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"6\";}i:4;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"4\";}i:5;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"7\";}i:6;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"10\";}i:7;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"9\";}i:8;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:1:\"8\";}i:9;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"11\";}i:10;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"12\";}i:11;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"13\";}i:12;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"14\";}i:13;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"22\";}i:14;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"17\";}i:15;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"19\";}i:16;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"20\";}i:17;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"21\";}i:18;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"23\";}i:19;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"18\";}i:20;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"36\";}i:21;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"37\";}i:22;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"38\";}i:23;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"24\";}i:24;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"27\";}i:25;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"26\";}i:26;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"25\";}i:27;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"32\";}i:28;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"35\";}i:29;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"34\";}i:30;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"33\";}i:31;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"28\";}i:32;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"31\";}i:33;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"30\";}i:34;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"29\";}i:35;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"39\";}i:36;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"44\";}i:37;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"47\";}i:38;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"46\";}i:39;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"45\";}i:40;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"40\";}i:41;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"43\";}i:42;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"42\";}i:43;a:2:{s:7:\"role_id\";i:1;s:7:\"rule_id\";s:2:\"41\";}}', '2130706433', '1544170476');
+INSERT INTO `zgw_admin_action_log` VALUES ('268', '1', '编辑权限节点-广告位列表', '/admin/admin_rule/ajaxSaveRule.html', 'a:10:{s:5:\"level\";i:2;s:9:\"rule_name\";s:15:\"广告位列表\";s:3:\"pid\";i:39;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:11:\"ad_position\";s:6:\"action\";s:13:\"positionindex\";s:6:\"status\";i:1;s:4:\"icon\";s:0:\"\";s:10:\"list_order\";i:1;s:11:\"update_time\";i:1544170768;}', '2130706433', '1544170768');
+INSERT INTO `zgw_admin_action_log` VALUES ('269', '1', '编辑权限节点-广告列表', '/admin/admin_rule/ajaxSaveRule.html', 'a:10:{s:5:\"level\";i:2;s:9:\"rule_name\";s:12:\"广告列表\";s:3:\"pid\";i:39;s:6:\"module\";s:5:\"admin\";s:10:\"controller\";s:5:\"ad_ad\";s:6:\"action\";s:7:\"adindex\";s:6:\"status\";i:1;s:4:\"icon\";s:0:\"\";s:10:\"list_order\";i:2;s:11:\"update_time\";i:1544170773;}', '2130706433', '1544170773');
+INSERT INTO `zgw_admin_action_log` VALUES ('270', '1', '添加广告位-博客首页banner幻灯片', '/admin/ad_position/ajaxSavePosition.html', 'a:5:{s:13:\"position_name\";s:27:\"博客首页banner幻灯片\";s:13:\"position_code\";s:17:\"blog_index_banner\";s:6:\"status\";i:1;s:11:\"update_time\";i:1544171449;s:11:\"create_time\";i:1544171449;}', '2130706433', '1544171449');
+INSERT INTO `zgw_admin_action_log` VALUES ('271', '1', '编辑广告位-博客首页banner幻灯片', '/admin/ad_position/ajaxSavePosition.html', 'a:4:{s:13:\"position_name\";s:27:\"博客首页banner幻灯片\";s:13:\"position_code\";s:17:\"blog_index_banner\";s:6:\"status\";i:1;s:11:\"update_time\";i:1544171488;}', '2130706433', '1544171488');
+INSERT INTO `zgw_admin_action_log` VALUES ('272', '1', '编辑广告位-博客首页banner幻灯片', '/admin/ad_position/ajaxSavePosition.html', 'a:4:{s:13:\"position_name\";s:27:\"博客首页banner幻灯片\";s:13:\"position_code\";s:17:\"blog_index_banner\";s:6:\"status\";i:0;s:11:\"update_time\";i:1544171490;}', '2130706433', '1544171490');
+INSERT INTO `zgw_admin_action_log` VALUES ('273', '1', '编辑广告位-博客首页banner幻灯片', '/admin/ad_position/ajaxSavePosition.html', 'a:4:{s:13:\"position_name\";s:27:\"博客首页banner幻灯片\";s:13:\"position_code\";s:17:\"blog_index_banner\";s:6:\"status\";i:0;s:11:\"update_time\";i:1544171509;}', '2130706433', '1544171509');
+INSERT INTO `zgw_admin_action_log` VALUES ('274', '1', '编辑广告位-博客首页banner幻灯片', '/admin/ad_position/ajaxSavePosition.html', 'a:4:{s:13:\"position_name\";s:27:\"博客首页banner幻灯片\";s:13:\"position_code\";s:17:\"blog_index_banner\";s:6:\"status\";i:1;s:11:\"update_time\";i:1544171538;}', '2130706433', '1544171538');
+INSERT INTO `zgw_admin_action_log` VALUES ('275', '1', '添加广告位-博客右侧侧栏广告1', '/admin/ad_position/ajaxSavePosition.html', 'a:5:{s:13:\"position_name\";s:25:\"博客右侧侧栏广告1\";s:13:\"position_code\";s:18:\"blog_right_aside_1\";s:6:\"status\";i:1;s:11:\"update_time\";i:1544171751;s:11:\"create_time\";i:1544171751;}', '2130706433', '1544171751');
+INSERT INTO `zgw_admin_action_log` VALUES ('276', '1', '添加广告位-博客右侧侧栏广告2', '/admin/ad_position/ajaxSavePosition.html', 'a:5:{s:13:\"position_name\";s:25:\"博客右侧侧栏广告2\";s:13:\"position_code\";s:18:\"blog_right_aside_2\";s:6:\"status\";i:1;s:11:\"update_time\";i:1544171780;s:11:\"create_time\";i:1544171780;}', '2130706433', '1544171780');
 
 -- ----------------------------
 -- Table structure for `zgw_admin_auth_access`
@@ -347,39 +396,48 @@ INSERT INTO `zgw_admin_auth_access` VALUES ('2', '14');
 INSERT INTO `zgw_admin_auth_access` VALUES ('2', '22');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '2');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '3');
-INSERT INTO `zgw_admin_auth_access` VALUES ('1', '4');
-INSERT INTO `zgw_admin_auth_access` VALUES ('1', '6');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '15');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '6');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '4');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '7');
-INSERT INTO `zgw_admin_auth_access` VALUES ('1', '8');
-INSERT INTO `zgw_admin_auth_access` VALUES ('1', '9');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '10');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '9');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '8');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '11');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '12');
-INSERT INTO `zgw_admin_auth_access` VALUES ('1', '22');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '13');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '14');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '22');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '17');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '19');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '20');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '21');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '23');
-INSERT INTO `zgw_admin_auth_access` VALUES ('1', '20');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '18');
-INSERT INTO `zgw_admin_auth_access` VALUES ('1', '38');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '36');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '37');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '38');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '24');
-INSERT INTO `zgw_admin_auth_access` VALUES ('1', '25');
-INSERT INTO `zgw_admin_auth_access` VALUES ('1', '26');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '27');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '26');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '25');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '32');
-INSERT INTO `zgw_admin_auth_access` VALUES ('1', '33');
-INSERT INTO `zgw_admin_auth_access` VALUES ('1', '34');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '35');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '34');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '33');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '28');
-INSERT INTO `zgw_admin_auth_access` VALUES ('1', '29');
-INSERT INTO `zgw_admin_auth_access` VALUES ('1', '30');
 INSERT INTO `zgw_admin_auth_access` VALUES ('1', '31');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '30');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '29');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '39');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '44');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '47');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '46');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '45');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '40');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '43');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '42');
+INSERT INTO `zgw_admin_auth_access` VALUES ('1', '41');
 
 -- ----------------------------
 -- Table structure for `zgw_admin_auth_role`
@@ -425,7 +483,7 @@ CREATE TABLE `zgw_admin_rule` (
   PRIMARY KEY (`rule_id`),
   KEY `rule_id` (`rule_id`),
   KEY `status` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='权限节点表';
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COMMENT='权限节点表';
 
 -- ----------------------------
 -- Records of zgw_admin_rule
@@ -465,6 +523,37 @@ INSERT INTO `zgw_admin_rule` VALUES ('35', '禁用标签', '32', '3', 'admin', '
 INSERT INTO `zgw_admin_rule` VALUES ('36', '添加配置', '18', '3', 'admin', 'blog_system', 'systemadd', '0', '', '0', '1544160797', '1544160797');
 INSERT INTO `zgw_admin_rule` VALUES ('37', '编辑配置', '18', '3', 'admin', 'blog_system', 'systemedit', '0', '', '0', '1544160833', '1544160833');
 INSERT INTO `zgw_admin_rule` VALUES ('38', '禁用配置', '18', '3', 'admin', 'blog_system', 'ajaxupdatesystemtatus', '0', '', '0', '1544160952', '1544160952');
+INSERT INTO `zgw_admin_rule` VALUES ('39', '广告管理', '0', '1', 'admin', '', '', '1', '&#xe6a8;', '5', '1544170031', '1544170328');
+INSERT INTO `zgw_admin_rule` VALUES ('40', '广告位列表', '39', '2', 'admin', 'ad_position', 'positionindex', '1', '', '1', '1544170122', '1544170768');
+INSERT INTO `zgw_admin_rule` VALUES ('41', '添加广告位', '40', '3', 'admin', 'ad_position', 'positionadd', '0', '', '0', '1544170170', '1544170170');
+INSERT INTO `zgw_admin_rule` VALUES ('42', '编辑广告位', '40', '3', 'admin', 'ad_position', 'positionedit', '0', '', '0', '1544170208', '1544170208');
+INSERT INTO `zgw_admin_rule` VALUES ('43', '禁用广告位', '40', '3', 'admin', 'ad_position', 'ajaxupdatepositionstatus', '0', '', '0', '1544170267', '1544170267');
+INSERT INTO `zgw_admin_rule` VALUES ('44', '广告列表', '39', '2', 'admin', 'ad_ad', 'adindex', '1', '', '2', '1544170376', '1544170773');
+INSERT INTO `zgw_admin_rule` VALUES ('45', '添加广告', '44', '3', 'admin', 'ad_ad', 'adadd', '0', '', '0', '1544170411', '1544170411');
+INSERT INTO `zgw_admin_rule` VALUES ('46', '编辑广告', '44', '3', 'admin', 'ad_ad', 'adedit', '0', '', '0', '1544170433', '1544170433');
+INSERT INTO `zgw_admin_rule` VALUES ('47', '禁用广告', '44', '3', 'admin', 'ad_ad', 'ajaxupdateadstatus', '0', '', '0', '1544170466', '1544170466');
+
+-- ----------------------------
+-- Table structure for `zgw_ad_position`
+-- ----------------------------
+DROP TABLE IF EXISTS `zgw_ad_position`;
+CREATE TABLE `zgw_ad_position` (
+  `position_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `position_name` varchar(60) NOT NULL COMMENT '广告位名',
+  `position_code` varchar(30) NOT NULL COMMENT '广告位唯一code',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1可用 0停用',
+  `create_time` int(10) NOT NULL,
+  `update_time` int(10) NOT NULL,
+  PRIMARY KEY (`position_id`),
+  KEY `module` (`position_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='广告位表';
+
+-- ----------------------------
+-- Records of zgw_ad_position
+-- ----------------------------
+INSERT INTO `zgw_ad_position` VALUES ('1', '博客首页banner幻灯片', 'blog_index_banner', '1', '1544171449', '1544171538');
+INSERT INTO `zgw_ad_position` VALUES ('2', '博客右侧侧栏广告1', 'blog_right_aside_1', '1', '1544171751', '1544171751');
+INSERT INTO `zgw_ad_position` VALUES ('3', '博客右侧侧栏广告2', 'blog_right_aside_2', '1', '1544171780', '1544171780');
 
 -- ----------------------------
 -- Table structure for `zgw_blog`
@@ -619,14 +708,15 @@ CREATE TABLE `zgw_blog_system` (
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`system_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='博客设置';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='博客设置';
 
 -- ----------------------------
 -- Records of zgw_blog_system
 -- ----------------------------
 INSERT INTO `zgw_blog_system` VALUES ('1', '博客名称', 'blog_name', '周国伟博客,技术博客,个人博客模板,php博客系统,设计模式', '1', '1542960731', '1544076023');
 INSERT INTO `zgw_blog_system` VALUES ('2', '博客SEO关键词', 'blog_keywords', '个人博客模板,博客模板,博客系统,技术博客,个人博客,设计模式,laravel博客,php博客', '1', '1542960731', '1544076023');
-INSERT INTO `zgw_blog_system` VALUES ('3', '博客SEO描述', 'blog_description', '周国伟的php博客,个人技术博客,分享免费个人博客模板,开源一些thinkphp,laravel相关的博客系统项目,bjy,blog和bjy,admin官网,写一些技术文章设计模式.', '1', '1542960731', '1544161845');
+INSERT INTO `zgw_blog_system` VALUES ('3', '博客SEO描述', 'blog_description', '周国伟的php博客,个人技术博客,分享免费个人博客模板,开源一些thinkphp,laravel相关的博客系统项目,bjy,blog和bjy,admin官网,写一些技术文章设计模式.', '1', '1542960731', '1544169639');
+INSERT INTO `zgw_blog_system` VALUES ('4', '网站ICP', 'site_icp', '豫ICP备18042601号', '1', '1544169705', '1544169705');
 
 -- ----------------------------
 -- Table structure for `zgw_blog_tag`

@@ -10,34 +10,26 @@
     <form class="layui-form layui-form-pane">
         <div class="layui-form-item">
             <label class="layui-form-label">
-                <span class="x-red">*</span>配置项名称：
+                <span class="x-red">*</span>广告位名称：
             </label>
             <div class="layui-input-inline">
-                <input type="hidden" name="system_id" value="<?php if(isset($system_info)):?><?php echo $system_info['system_id'];?><?php else:?>0<?php endif;?>" class="layui-input">
-                <input type="text"  name="system_name" lay-verify="required" placeholder="输入配置项名称..." autocomplete="off" value="<?php if(isset($system_info)):?><?php echo $system_info['system_name'];?><?php endif;?>" class="layui-input">
+                <input type="hidden" name="position_id" value="<?php if(isset($position_info)):?><?php echo $position_info['position_id'];?><?php else:?>0<?php endif;?>" class="layui-input">
+                <input type="text"  name="position_name" lay-verify="required" placeholder="输入广告位名称..." autocomplete="off" value="<?php if(isset($position_info)):?><?php echo $position_info['position_name'];?><?php endif;?>" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">
-                <span class="x-red">*</span>配置项code：
+                <span class="x-red">*</span>广告位code：
             </label>
             <div class="layui-input-inline">
-                <input type="text"  name="system_code" lay-verify="required" placeholder="输入配置项code..." autocomplete="off" value="<?php if(isset($system_info)):?><?php echo $system_info['system_code'];?><?php endif;?>" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <span class="x-red">*</span>配置项value：
-            </label>
-            <div class="layui-input-block">
-                <textarea name="system_value" lay-verify="required" placeholder="输入配置项value..." class="layui-textarea"><?php if(isset($system_info)):?><?php echo $system_info['system_value'];?><?php endif;?></textarea>
+                <input type="text"  name="position_code" lay-verify="required" placeholder="输入广告位code..." autocomplete="off" value="<?php if(isset($position_info)):?><?php echo $position_info['position_code'];?><?php endif;?>" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">启用状态：</label>
             <div class="layui-input-block">
-                <input type="hidden" id="status" name="status" value="<?php if(isset($system_info)):?><?php echo $system_info['status'];?><?php endif;?>" class="layui-input">
-                <input type="checkbox" <?php if(isset($system_info) && $system_info['status'] == 1):?>checked=""<?php endif;?> switch="status" lay-skin="switch" lay-filter="switchStatus" lay-text="启用|停用">
+                <input type="hidden" id="status" name="status" value="<?php if(isset($position_info)):?><?php echo $position_info['status'];?><?php endif;?>" class="layui-input">
+                <input type="checkbox" <?php if(isset($position_info) && $position_info['status'] == 1):?>checked=""<?php endif;?> switch="status" lay-skin="switch" lay-filter="switchStatus" lay-text="启用|停用">
             </div>
         </div>
         <div class="layui-form-item">
@@ -60,14 +52,13 @@
 
         //监听提交
         form.on('submit(save)', function(data){
-            var system_id = $("input[name='system_id']").val();
-            var system_name = $("input[name='system_name']").val();
-            var system_code = $("input[name='system_code']").val();
-            var system_value = $("textarea[name='system_value']").val();
+            var position_id = $("input[name='position_id']").val();
+            var position_name = $("input[name='position_name']").val();
+            var position_code = $("input[name='position_code']").val();
             var status = $("input[name='status']").val();
 
-            var post_url = "{:url('blog_system/ajaxSaveSystem')}";
-            var post_data = {"system_id":system_id,"system_name":system_name,"system_code":system_code,"system_value":system_value,"status":status};
+            var post_url = "{:url('ad_position/ajaxSavePosition')}";
+            var post_data = {"position_id":position_id,"position_name":position_name,"position_code":position_code,"status":status};
             var index = layer.load(1, {
                 shade: [0.5,'#fff'] //0.1透明度的白色背景
             });

@@ -26,6 +26,14 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>配置项value：
+            </label>
+            <div class="layui-input-block">
+                <textarea name="system_value" lay-verify="required" placeholder="输入配置项value..." class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">启用状态：</label>
             <div class="layui-input-block">
                 <input type="hidden" id="status" name="status" value="1" class="layui-input">
@@ -55,10 +63,11 @@
             var system_id = $("input[name='system_id']").val();
             var system_name = $("input[name='system_name']").val();
             var system_code = $("input[name='system_code']").val();
+            var system_value = $("textarea[name='system_value']").val();
             var status = $("input[name='status']").val();
 
             var post_url = "{:url('blog_system/ajaxSaveSystem')}";
-            var post_data = {"system_id":system_id,"system_name":system_name,"system_code":system_code,"status":status};
+            var post_data = {"system_id":system_id,"system_name":system_name,"system_code":system_code,"system_value":system_value,"status":status};
             var index = layer.load(1, {
                 shade: [0.5,'#fff'] //0.1透明度的白色背景
             });

@@ -9,27 +9,27 @@
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">
-                    配置项名称：
+                    广告位名称：
                 </label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" name="system_name"  placeholder="输入配置项名称..." autocomplete="off">
+                    <input class="layui-input" name="position_name"  placeholder="输入广告位名称..." autocomplete="off">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">
-                    配置项code：
+                    广告位code：
                 </label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" name="system_code"  placeholder="输入配置项code..." autocomplete="off">
+                    <input class="layui-input" name="position_code"  placeholder="输入广告位code..." autocomplete="off">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">
-                    配置项状态：
+                    广告位状态：
                 </label>
                 <div class="layui-input-inline">
                     <select name="status">
-                        <option value="2">==配置项状态==</option>
+                        <option value="2">==广告位状态==</option>
                         <option value="1">已启用</option>
                         <option value="0">已禁用</option>
                     </select>
@@ -43,7 +43,7 @@
 
     <xblock>
         <div class="layui-btn-group">
-            <a class="layui-btn"  href="javascript:;" onclick="x_admin_show('添加配置项','{:url(\'blog_system/systemAdd\')}',600,500)"><i class="layui-icon">&#xe61f;</i>添加</a>
+            <a class="layui-btn"  href="javascript:;" onclick="x_admin_show('添加广告位','{:url(\'ad_position/positionAdd\')}',600,500)"><i class="layui-icon">&#xe61f;</i>添加</a>
             <button class="layui-btn layui-btn-warm" onclick="javascript:document.getElementsByClassName('layui-laypage-btn')[0].click();"><i class="layui-icon">&#xe669;</i>刷新</button>
         </div>
     </xblock>
@@ -57,13 +57,12 @@
             var table = layui.table;
             table.render({
                 elem: '#layui_table',
-                url: '{:url("blog_system/ajaxGetSystemList")}',
-                title: '博客配置项',
+                url: '{:url("ad_position/ajaxGetPositionList")}',
+                title: '博客广告位',
                 cols: [[
-                    {field:'system_id', title:'ID',width:80, align: 'center',fixed: 'left'},
-                    {field:'system_name', title:'配置项名称', align: 'left',fixed: 'left'},
-                    {field:'system_code', title:'配置项code',align: 'left',fixed: 'left'},
-                    {field:'system_value', title:'配置项value', align: 'left',fixed: 'left'},
+                    {field:'position_id', title:'ID',width:80, align: 'center',fixed: 'left'},
+                    {field:'position_name', title:'广告位名称', align: 'left',fixed: 'left'},
+                    {field:'position_code', title:'广告位code',align: 'left',fixed: 'left'},
                     {field:'status', title:'显示状态',width:100, align: 'center', templet: function(res){
                         if(res.status == 1){
                             return '<span class="layui-btn layui-btn-normal layui-btn-xs layui-btn-radius td-status">已启用</span>';
@@ -95,19 +94,19 @@
                     var change_status = 0;
                     if(data.status == 1){
                         //要停用
-                        msg = '真的要停用该配置项吗？';
+                        msg = '真的要停用该广告位吗？';
                         change_status = 0;
                     }else if(data.status == 0){
                         //要启用
-                        msg = '真的要启用该配置项吗？';
+                        msg = '真的要启用该广告位吗？';
                         change_status = 1
                     }
                     layer.confirm(msg, function(index){
                         var load_index = layer.load(1, {
                             shade: [0.5,'#fff'] //0.1透明度的白色背景
                         });
-                        var post_url = "{:url('blog_system/ajaxUpdateSystemStatus')}";
-                        var post_data = {"system_id":data.system_id,"status":change_status};
+                        var post_url = "{:url('ad_position/ajaxUpdatePositionStatus')}";
+                        var post_data = {"position_id":data.position_id,"status":change_status};
                         $.ajax({
                             type : "POST",
                             url : post_url,
@@ -146,16 +145,16 @@
                         });
                     });
                 } else if(obj.event === 'edit'){
-                    x_admin_show('编辑配置项',"{:url(\'blog_system/systemEdit\')}?system_id="+data.system_id,600,500);
+                    x_admin_show('编辑广告位',"{:url(\'ad_position/positionEdit\')}?position_id="+data.position_id,600,500);
                 }
             });
             var $ = layui.$, active = {
                 reload: function(){
                     var where = {};
-                    var system_name = $("input[name='system_name']").val();
-                    where.system_name = system_name;
-                    var system_code = $("input[name='system_code']").val();
-                    where.system_code = system_code;
+                    var position_name = $("input[name='position_name']").val();
+                    where.position_name = position_name;
+                    var position_code = $("input[name='position_code']").val();
+                    where.position_code = position_code;
                     var status = $("select[name='status']").val();
                     where.status = status;
                     table.reload('tableReload', {

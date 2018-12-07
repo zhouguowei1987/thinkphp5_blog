@@ -12,9 +12,9 @@
                     博文分类：
                 </label>
                 <div class="layui-input-inline">
-                    <?php if(isset($category)):?>
                     <select name="category_id">
                         <option value="">==选择博文分类==</option>
+                        <?php if(isset($category)):?>
                         <?php foreach($category as $v):?>
                         <?php if(isset($v['son'])):?>
                         <optgroup label="<?php echo $v['category_name'];?>">
@@ -26,8 +26,8 @@
                         <option value="<?php echo $v['category_id'];?>"><?php echo $v['category_name'];?></option>
                         <?php endif;?>
                         <?php endforeach;?>
+                        <?php endif;?>
                     </select>
-                    <?php endif;?>
                 </div>
             </div>
             <div class="layui-inline">

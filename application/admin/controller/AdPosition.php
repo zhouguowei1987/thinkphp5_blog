@@ -12,34 +12,34 @@ use think\Request;
 use think\Session;
 use think\Url;
 
-class BlogSystem extends Base
+class AdPosition extends Base
 {
     /*
-     * 博客配置列表
+     * 广告位列表
      */
-    public function systemIndex(){
-        return $this->fetch('system_index');
+    public function positionIndex(){
+        return $this->fetch('position_index');
     }
     /*
-     * ajax获取博客配置列表
+     * ajax获取广告位列表
      */
-    public function ajaxGetSystemList(){
+    public function ajaxGetPositionList(){
         if(Request::instance()->isAjax()){
             $page = Request::instance()->get('page/d',1);
             $limit = Request::instance()->get('limit/d',10);
             $offset = ($page - 1) * $limit;
-            $systemModel = new \app\admin\model\BlogSystem();
+            $positionModel = new \app\admin\model\AdPosition();
             $where = [];
-            if(Request::instance()->has('system_name')) {
-                $system_name = Request::instance()->get('system_name/s');
-                if ($system_name) {
-                    $where['system_name'] = ['LIKE',"%{$system_name}%"];
+            if(Request::instance()->has('position_name')) {
+                $position_name = Request::instance()->get('position_name/s');
+                if ($position_name) {
+                    $where['position_name'] = ['LIKE',"%{$position_name}%"];
                 }
             }
-            if(Request::instance()->has('system_code')) {
-                $system_code = Request::instance()->get('system_code/s');
-                if ($system_code) {
-                    $where['system_code'] = $system_code;
+            if(Request::instance()->has('position_code')) {
+                $position_code = Request::instance()->get('position_code/s');
+                if ($position_code) {
+                    $where['position_code'] = $position_code;
                 }
             }
             if(Request::instance()->has('status')) {
@@ -48,7 +48,7 @@ class BlogSystem extends Base
                     $where['status'] = $status;
                 }
             }
-            $result = $systemModel->getSystemList($offset,$limit,$where);
+            $result = $positionModel->getPositionList($offset,$limit,$where);
             if(!empty($result['iTotalRecords'])){
                 foreach($result['iTotalRecords'] as $k=>$v){
                     //创建时间
@@ -65,32 +65,32 @@ class BlogSystem extends Base
         }
     }
     /*
-     * ajax隐藏、显示博客配置
+     * ajax隐藏、显示广告位
      */
-    public function ajaxUpdateSystemStatus(){
+    public function ajaxUpdatePositionStatus(){
         if(Request::instance()->isAjax()){
-            if(Request::instance()->has('system_id') && Request::instance()->has('status')){
-                $system_id = Request::instance()->post('system_id/d');
-                $systemModel = new \app\admin\model\BlogSystem();
-                $system_info = $systemModel->getSystemOneByWhere(['system_id'=>$system_id]);
-                if(!empty($system_info)){
-                    $where['system_id'] = $system_id;
+            if(Request::instance()->has('position_id') && Request::instance()->has('status')){
+                $position_id = Request::instance()->post('position_id/d');
+                $positionModel = new \app\admin\model\AdPosition();
+                $position_info = $positionModel->getPositionOneByWhere(['position_id'=>$position_id]);
+                if(!empty($position_info)){
+                    $where['position_id'] = $position_id;
                     $status = Request::instance()->post('status/d');
                     $data = [
                         'status' => $status,
                         'update_time' => time()
                     ];
-                    if($systemModel->saveSystem($data,$where)){
+                    if($positionModel->savePosition($data,$where)){
                         //添加后台行为操作日志
                         $actionLogModel = new \app\admin\model\AdminActionLog();
                         $log_note = '';
                         if($status == 0){
-                            $log_note = '隐藏博客配置-'.$system_info['system_name'];
+                            $log_note = '隐藏广告位-'.$position_info['position_name'];
                         }else if($status == 1){
-                            $log_note = '显示博客配置-'.$system_info['system_name'];
+                            $log_note = '显示广告位-'.$position_info['position_name'];
                         }
                         $actionLogData = [
-                            'blog_id' => Session::get('admin.admin_id'),
+                            'ad_id' => Session::get('admin.admin_id'),
                             'log_note' => $log_note,
                             'log_url' => Request::instance()->url(),
                             'log_data' => serialize($data),
@@ -103,7 +103,7 @@ class BlogSystem extends Base
                         return json(['status'=>500,'msg'=>'操作失败']);
                     }
                 }else{
-                    return json(['status'=>500,'msg'=>'配置项不存在']);
+                    return json(['status'=>500,'msg'=>'广告位不存在']);
                 }
             }else{
                 return json(['status'=>500,'msg'=>'缺少参数']);
@@ -111,67 +111,65 @@ class BlogSystem extends Base
         }
     }
     /*
-     * 编辑博客配置
+     * 编辑广告位
      */
-    public function systemEdit(){
-        $system_id = Request::instance()->param('system_id/d',0);
-        $systemModel = new \app\admin\model\BlogSystem();
-        $system_info = $systemModel->getSystemOneByWhere(['system_id'=>$system_id]);
-        if(!empty($system_info)){
-            $this->assign('system_info',$system_info);
-            return $this->fetch('system_edit');
+    public function positionEdit(){
+        $position_id = Request::instance()->param('position_id/d',0);
+        $positionModel = new \app\admin\model\AdPosition();
+        $position_info = $positionModel->getPositionOneByWhere(['position_id'=>$position_id]);
+        if(!empty($position_info)){
+            $this->assign('position_info',$position_info);
+            return $this->fetch('position_edit');
         }else{
             return $this->fetch('common/404');
         }
     }
     /*
-     * 添加博客配置
+     * 添加广告位
      */
-    public function systemAdd(){
-        return $this->fetch('system_add');
+    public function positionAdd(){
+        return $this->fetch('position_add');
     }
     /*
-     * ajax保存博客配置信息
+     * ajax保存广告位信息
      */
-    public function ajaxSaveSystem(){
+    public function ajaxSavePosition(){
         if(Request::instance()->isAjax()){
-            $system_id = Request::instance()->post('system_id/d',0);
-            $systemModel = new \app\admin\model\BlogSystem();
-            $system_info = $systemModel->getSystemOneByWhere(['system_id'=>$system_id]);
+            $position_id = Request::instance()->post('position_id/d',0);
+            $positionModel = new \app\admin\model\AdPosition();
+            $position_info = $positionModel->getPositionOneByWhere(['position_id'=>$position_id]);
             $where = [];
-            $system_name = str_replace([' '],'',Request::instance()->post('system_name/s'));
-            $system_code = str_replace([' '],'',Request::instance()->post('system_code/s'));
-            $system_value = str_replace([' '],'',Request::instance()->post('system_value/s'));
+            $position_name = str_replace([' '],'',Request::instance()->post('position_name/s'));
+            $position_code = str_replace([' '],'',Request::instance()->post('position_code/s'));
             $status = Request::instance()->post('status/d');
             $data = [
-                'system_name' => $system_name,
-                'system_code' => $system_code,
-                'system_value' => $system_value,
+                'position_name' => $position_name,
+                'position_code' => $position_code,
                 'status' => $status,
                 'update_time' => time()
             ];
-            //查看配置项code是否可用
-            $code_system_info = $systemModel->getSystemOneByWhere(['system_code'=>$system_code]);
-            if(!empty($system_info)){
-                if(!empty($code_system_info) && $code_system_info['system_id'] != $system_id){
-                    return json(['status'=>500,'msg'=>'配置项code已存在，不可使用']);
+            //查看广告位code是否可用
+            $code_position_info = $positionModel->getPositionOneByWhere(['position_code'=>$position_code]);
+            if(!empty($position_info)){
+                if(!empty($code_position_info) && $code_position_info['position_id'] != $position_id){
+                    return json(['status'=>500,'msg'=>'广告位code已存在，不可使用']);
                 }
-                $where['system_id'] = $system_id;
+                $where['position_id'] = $position_id;
             }else{
-                if(!empty($code_system_info)){
-                    return json(['status'=>500,'msg'=>'配置项code已存在无需重复添加']);
+                if(!empty($code_position_info)){
+                    return json(['status'=>500,'msg'=>'广告位code已存在无需重复添加']);
                 }
                 $data['create_time'] = time();
             }
-            if($result_system_id = $systemModel->saveSystem($data,$where)){
+            if($result_position_id = $positionModel->savePosition($data,$where)){
                 //添加后台行为操作日志
                 $actionLogModel = new \app\admin\model\AdminActionLog();
                 if(!empty($where)){
-                    $log_note = '编辑博客配置-'.$system_info['system_name'];
-                    $referr_url = Url::build('blog_system/systemEdit',['system_id'=>$system_id]);
+                    $log_note = '编辑广告位-'.$position_info['position_name'];
+                    $referr_url = Url::build('ad_position/positionEdit',['position_id'=>$position_id]);
                 }else{
-                    $log_note = '添加博客配置-'.$system_name;
-                    $referr_url = Url::build('blog_system/systemEdit',['system_id'=>$result_system_id]);
+                    $log_note = '添加广告位-'.$position_name;
+                    $referr_url = Url::build('ad_position/positionEdit',['position_id'=>$result_position_id]);
                 }
                 $actionLogData = [
                     'admin_id' => Session::get('admin.admin_id'),
