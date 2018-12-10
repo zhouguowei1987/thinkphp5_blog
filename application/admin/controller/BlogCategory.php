@@ -20,7 +20,7 @@ class BlogCategory extends Base
     public function categoryIndex(){
         $categoryModel = new \app\admin\model\BlogCategory();
         $category = $categoryModel->getCategoryMultipleByWhere([]);
-        $category = getTree($category,0,'pid','category_id');
+        $category = get_tree($category,0,'pid','category_id');
         $this->assign('category',$category);
         return $this->fetch('category_index');
     }

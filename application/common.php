@@ -71,15 +71,33 @@ function check_mailbox($mailbox) {
  * @param $parent_id
  * @param $id
  */
-function getTree($data, $pid = 0,$parent_id = 'parent_id',$id = 'id'){
+function get_tree($data, $pid = 0,$parent_id = 'parent_id',$id = 'id'){
     $tree = [];
     foreach($data as $k => $v) {
         if($v[$parent_id] == $pid) {
-            $v['son'] = getTree($data, $v[$id],$parent_id,$id);
+            $v['son'] = get_tree($data, $v[$id],$parent_id,$id);
             if(empty($v['son'])) unset($v['son']);
             $tree[] = $v;
             unset($data[$k]);
         }
     }
     return $tree;
+}
+/*
+ * 获取blog广告
+ * @param $position_code
+ * @param $ad_type 1、图片 2、文字
+ */
+function get_blog_ad_list($position_code,$ad_type){
+    $positionModel = new \app\blog\model\AdPosition();
+    $position_info = $positionModel->getPositionOneByWhere(['position_code'=>$position_code,'status'=>1]);
+    if(empty($position_info)){
+        return false;
+    }
+    $adModel = new \app\blog\model\AdAd();
+    $ad = $adModel->getAdMultipleByWhere(['position_id'=>$position_info['position_id'],'status'=>1,'ad_type'=>$ad_type]);
+    if(empty($ad)){
+        return false;
+    }
+    return $ad;
 }

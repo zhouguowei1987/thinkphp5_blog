@@ -65,24 +65,4 @@ class BlogTag extends Model
             return false;
         }
     }
-    /*
-     * 删除博客标签
-     * @param $where
-     */
-    public function deleteBlog($where = []){
-        DB::startTrans();
-        if(empty($where)){
-            return false;
-        }
-        try{
-            if(Db::name('blog')->where($where)->delete() === false){
-                throw new Exception('删除博客标签失败');
-            }
-            Db::commit();
-            return true;
-        }catch (Exception $e){
-            DB::rollback();
-            return false;
-        }
-    }
 }

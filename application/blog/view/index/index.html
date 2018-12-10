@@ -14,9 +14,11 @@
     <main>
         <!--banner begin-->
         <div class="banner">
+            <?php if(isset($blog_index_banner)):?>
             <div id="banner" class="fader">
-                <li class="slide" ><a href="/news/life/2018-06-17/873.html" title="D设计师博客-一个热爱生活的设计师" target="_blank"><img src="/public/static/index/images/1.jpg"><span class="imginfo">D设计师博客-一个热爱生活的设计师</span></a></li>
-                <li class="slide" ><a href="/news/life/2018-04-27/816.html" title="个人博客，属于我的小世界！" target="_blank"><img src="/public/static/index/images/2.jpg"><span class="imginfo">个人博客，属于我的小世界！</span></a></li>
+                <?php foreach($blog_index_banner as $v):?>
+                <li class="slide" ><a href="<?php echo $v['ad_image_open_url'];?>" title="<?php echo $v['ad_name'];?>"><img src="<?php echo $v['ad_image'];?>"><span class="imginfo"><?php echo $v['ad_name'];?></span></a></li>
+                <?php endforeach;?>
                 <div class="fader_controls">
                     <div class="page prev" data-target="prev">&lsaquo;</div>
                     <div class="page next" data-target="next">&rsaquo;</div>
@@ -24,12 +26,13 @@
                     </ul>
                 </div>
             </div>
+            <?php endif;?>
         </div>
         <!--banner end-->
         <div class="bloglist">
             <?php if(isset($index_blog)):?>
             <ul>
-                <?php foreach($index_blog as $v):?>
+                <?php foreach($index_blog['list'] as $v):?>
                 <li> <i class="blogpic"><a href="<?php echo $v['blog_url'];?>"><img src="<?php echo $v['blog_thumb'];?>" alt="<?php echo $v['blog_title'];?>"> </a></i>
                     <dl>
                         <dt><a href="<?php echo $v['blog_url'];?>"><?php echo $v['blog_title'];?></a></dt>
@@ -43,6 +46,7 @@
             <?php endif;?>
         </div>
         <!--bloglist end-->
+        <?php if(isset($index_blog)):?><?php echo $index_blog['page'];?><?php endif;?>
     </main>
     {include file="common/aside" /}
     <!--sidebar end-->

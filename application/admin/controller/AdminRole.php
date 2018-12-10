@@ -236,7 +236,7 @@ class adminRole extends Base
             if(!empty($role_info)){
                 //所有权限节点
                 $rule = $ruleModel->getRuleMultipleByWhere([],'list_order ASC,rule_id ASC');
-                $rule = getTree($rule,0,'pid','rule_id');
+                $rule = get_tree($rule,0,'pid','rule_id');
                 $this->assign('rule',$rule);
                 //当前角色的权限
                 $authAccess = $authAccessModel->getAuthAccessMultipleByWhere(['role_id'=>$role_id]);

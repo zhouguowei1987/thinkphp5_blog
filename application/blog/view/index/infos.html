@@ -19,15 +19,18 @@
                 <div class="bloginfo">
                     <ul>
                         <li class="author"> </li>
-                        <li class="lmname">博客日记</li>
+                        <li class="lmname"><?php echo $blog_info['category_name'];?></li>
                         <li class="timer"><?php if(isset($blog_info)):?><?php echo $blog_info['create_time'];?><?php endif;?></li>
                         <li class="view"><?php if(isset($blog_info)):?><?php echo $blog_info['blog_views'];?><?php endif;?>人已阅读</li>
                     </ul>
                 </div>
+                <?php if(!empty($blog_info['blog_tags'])):?>
                 <div class="tags">
-                    <a href="/e/tags/?tagname=%B8%F6%C8%CB%B2%A9%BF%CD&amp;tempid=13" target="_blank">个人博客</a>
-                    <a href="/e/tags/?tagname=%B5%DB%B9%FAcms&amp;tempid=13" target="_blank">帝国cms</a>
+                    <?php foreach($blog_info['blog_tags'] as $v):?>
+                    <a href="<?php echo $v['tag_url'];?>"><?php echo $v['tag_name'];?></a>
+                    <?php endforeach;?>
                 </div>
+                <?php endif;?>
                 <div class="news_about"><strong>简介</strong><?php if(isset($blog_info)):?><?php echo $blog_info['blog_description'];?><?php endif;?></div>
                 <div class="news_con"><?php if(isset($blog_info)):?><?php echo $blog_info['blog_detail'];?><?php endif;?></div>
             <div class="share">

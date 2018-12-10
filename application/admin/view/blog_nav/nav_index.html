@@ -136,9 +136,8 @@
                     if(result.status == 500){
                         layer.msg(result.msg, {icon: 5});
                     }else if(result.status == 200){
-                        layer.msg(result.msg, {icon: 6},function () {
-                            window.location.reload();
-                        });
+                        window.location.reload();
+                        layer.msg(result.msg, {icon: 6});
                     }
                 }
             });

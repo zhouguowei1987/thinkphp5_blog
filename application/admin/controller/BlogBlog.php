@@ -21,7 +21,7 @@ class BlogBlog extends Base
         //博文分类
         $categoryModel = new \app\admin\model\BlogCategory();
         $category = $categoryModel->getCategoryMultipleByWhere(['status'=>1]);
-        $category = getTree($category,0,'pid','category_id');
+        $category = get_tree($category,0,'pid','category_id');
         $this->assign('category',$category);
         return $this->fetch('blog_index');
     }
@@ -118,7 +118,7 @@ class BlogBlog extends Base
             //博文分类
             $categoryModel = new \app\admin\model\BlogCategory();
             $category = $categoryModel->getCategoryMultipleByWhere(['status'=>1]);
-            $category = getTree($category,0,'pid','category_id');
+            $category = get_tree($category,0,'pid','category_id');
             $this->assign('category',$category);
             $blog_tags = [];
             if(!empty($blog_info['blog_tags'])){
@@ -145,7 +145,7 @@ class BlogBlog extends Base
         //博文分类
         $categoryModel = new \app\admin\model\BlogCategory();
         $category = $categoryModel->getCategoryMultipleByWhere(['status'=>1]);
-        $category = getTree($category,0,'pid','category_id');
+        $category = get_tree($category,0,'pid','category_id');
         $this->assign('category',$category);
         return $this->fetch('blog_add');
     }

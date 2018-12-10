@@ -20,7 +20,7 @@ class BlogNav extends Base
     public function navIndex(){
         $navModel = new \app\admin\model\BlogNav();
         $nav = $navModel->getNavMultipleByWhere([]);
-        $nav = getTree($nav,0,'pid','nav_id');
+        $nav = get_tree($nav,0,'pid','nav_id');
         $this->assign('nav',$nav);
         return $this->fetch('nav_index');
     }

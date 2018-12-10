@@ -39,7 +39,7 @@ class Index extends Base
             }
             //根据权限节点，得到权限节点详情
             $rule = $ruleModel->getRuleMultipleByWhere(['rule_id'=>['IN',$rule_ids],'status'=>1],'list_order ASC');
-            $result = getTree($rule,0,'pid','rule_id');
+            $result = get_tree($rule,0,'pid','rule_id');
         }
         return $result;
     }

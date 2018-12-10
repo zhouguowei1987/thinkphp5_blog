@@ -20,7 +20,7 @@ class AdminRule extends Base
     public function ruleIndex(){
         $ruleModel = new \app\admin\model\AdminRule();
         $rule = $ruleModel->getRuleMultipleByWhere([],'list_order ASC,rule_id ASC');
-        $rule = getTree($rule,0,'pid','rule_id');
+        $rule = get_tree($rule,0,'pid','rule_id');
         $this->assign('rule',$rule);
         return $this->fetch('rule_index');
     }

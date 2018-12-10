@@ -40,27 +40,20 @@ class Index extends Controller
     public function nav(){
         $navModel = new \app\blog\model\BlogNav();
         $nav = $navModel->getNavMultipleByWhere([],'list_order ASC');
-        $nav = getTree($nav,0,'pid','nav_id');
+        $nav = get_tree($nav,0,'pid','nav_id');
         $this->assign('nav',$nav);
     }
     /*
      * 首页
      */
     public function index(){
-        $blogModel = new \app\blog\model\BlogBlog();
-        $index_blog = $blogModel->getBlogListByWhere(['is_index'=>1,'status'=>1],'blog_id,category_id,blog_title,blog_description,blog_thumb,blog_type,blog_url,create_time',0,15,'index_sort DESC,blog_id DESC');
-        $categoryModel = new \app\blog\model\BlogCategory();
-        foreach($index_blog as $k=>$v){
-            //系统博文
-            if($v['blog_type'] == 1){
-                $index_blog[$k]['blog_url'] = Url::build('Index/infos',['blog_id'=>$v['blog_id']]);
-            }
-            $index_blog[$k]['create_time'] = date("Y-m-d",$v['create_time']);
-            $category_info = $categoryModel->getCategoryOneByWhere(['category_id'=>$v['category_id']]);
-            $index_blog[$k]['category_name'] = !empty($category_info) ? $category_info['category_name'] : '';
-            //分类-博文列表url
-            $index_blog[$k]['blog_category_url'] = Url::build('Index/lists',['category_id'=>$v['category_id']]);
+        //幻灯片广告
+        $blog_index_banner = get_blog_ad_list('blog_index_banner',1);
+        if($blog_index_banner){
+            $this->assign('blog_index_banner',$blog_index_banner);
         }
+        $blogModel = new \app\blog\model\BlogBlog();
+        $index_blog = $blogModel->getBlogListPage(['is_index'=>1,'status'=>1],'blog_id,category_id,blog_title,blog_description,blog_thumb,blog_type,blog_url,create_time','index_sort DESC,blog_id DESC');
         $this->assign('index_blog',$index_blog);
         return $this->fetch('index');
     }
@@ -78,9 +71,22 @@ class Index extends Controller
     }
     /*
      * 博客列表
+     * @param $category_id
+     * @param $page
      */
     public function lists(){
-        return $this->fetch('lists');
+        if(Request::instance()->has('category_id')){
+            $category_id = Request::instance()->param('category_id/d',0);
+            $categoryModel = new \app\blog\model\BlogCategory();
+            $category_info = $categoryModel->getCategoryOneByWhere(['category_id'=>$category_id]);
+            if(!empty($category_info)){
+                $blogModel = new \app\blog\model\BlogBlog();
+                $blog_list = $blogModel->getBlogListPage(['category_id'=>$category_id,'status'=>1],'blog_id,category_id,blog_title,blog_description,blog_thumb,blog_type,blog_url,create_time','blog_id DESC');
+                $this->assign('blog_list',$blog_list);
+                return $this->fetch('lists');
+            }
+        }
+        return $this->fetch('common/404');
     }
     /*
      * 学无止境
@@ -103,9 +109,39 @@ class Index extends Controller
         $blogModel = new \app\blog\model\BlogBlog();
         $blog_info = $blogModel->getBlogInfoOneByWhere(['blog_id'=>$blog_id]);
         if(!empty($blog_info)){
+            $seo['blog_name'] = !empty($blog_info['blog_title']) ? $blog_info['blog_title'] : '';
+            $seo['blog_keywords'] = !empty($blog_info['blog_keywords']) ? $blog_info['blog_keywords'] : '';
+            $seo['blog_description'] = !empty($blog_info['blog_description']) ? $blog_info['blog_description'] : '';
+            $this->assign('seo',$seo);
+
+            $categoryModel = new \app\blog\model\BlogCategory();
+            $category_info = $categoryModel->getCategoryOneByWhere(['category_id'=>$blog_info['category_id']]);
+            $blog_info['category_name'] = !empty($category_info) ? $category_info['category_name'] : '';
+            if(!empty($blog_info['blog_tags'])){
+                $blog_tags = explode(',',$blog_info['blog_tags']);
+                $blog_info['blog_tags'] = [];
+                $tagModel = new \app\blog\model\BlogTag();
+                foreach($blog_tags as $v){
+                    $tag_info = $tagModel->getTagOneByWhere(['tag_id'=>$v]);
+                    if(!empty($tag_info)){
+                        $blog_info['blog_tags'][] = [
+                            'tag_name' => $tag_info['tag_name'],
+                            'tag_url' => Url::build('index/tags',['tag_id'=>$tag_info['tag_id']])
+                        ];
+                    }
+                }
+            }
             $blog_info['create_time'] = date('Y-m-d',$blog_info['create_time']);
+            $this->assign('blog_info',$blog_info);
+            return $this->fetch('infos');
         }
-        $this->assign('blog_info',$blog_info);
-        return $this->fetch('infos');
+        return $this->fetch('common/404');
+    }
+    /*
+     * tag标签列表
+     * @param tag_id
+     */
+    public function tags(){
+        return $this->fetch('tags');
     }
 }
