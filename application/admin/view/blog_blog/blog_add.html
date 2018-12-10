@@ -69,6 +69,15 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
+                            <label class="layui-form-label">tag标签：</label>
+                            <div class="layui-input-inline">
+                                <input type="type" name="blog_tags" placeholder="多个标签之间用“,”分隔，最多不超过10个..." value="" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">
+                                <button type="button" class="layui-btn layui-btn-normal layui-btn-xs layui-btn-radius">插入已有标签</button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
                             <label class="layui-form-label">博文类型：</label>
                             <div class="layui-input-block">
                                 <input type="hidden" name="blog_type" value="1" class="layui-input">
@@ -277,6 +286,8 @@
             post_data.list_sort = list_sort;
             var blog_type = $("input[name='blog_type']").val();
             post_data.blog_type = blog_type;
+            var blog_tags = $("input[name='blog_tags']").val();
+            post_data.blog_tags = blog_tags;
             var blog_url = $("input[name='blog_url']").val();
             post_data.blog_url = blog_url;
             var is_index = $("input[name='is_index']").val();

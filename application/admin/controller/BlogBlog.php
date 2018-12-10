@@ -120,6 +120,18 @@ class BlogBlog extends Base
             $category = $categoryModel->getCategoryMultipleByWhere(['status'=>1]);
             $category = getTree($category,0,'pid','category_id');
             $this->assign('category',$category);
+            $blog_tags = [];
+            if(!empty($blog_info['blog_tags'])){
+                $tagModel = new \app\admin\model\BlogTag();
+                $blog_tag_ids = explode(',',$blog_info['blog_tags']);
+                foreach($blog_tag_ids as $k=>$v){
+                    $tag_info = $tagModel->getTagOneByWhere(['tag_id'=>$v]);
+                    if(!empty($tag_info)){
+                        $blog_tags[] = $tag_info['tag_name'];
+                    }
+                }
+            }
+            $blog_info['blog_tags'] = implode(',',$blog_tags);
             $this->assign('blog_info',$blog_info);
             return $this->fetch('blog_edit');
         }else{
@@ -154,6 +166,29 @@ class BlogBlog extends Base
             $blog_detail = Request::instance()->post('blog_detail/s','');
             $list_sort = Request::instance()->post('list_sort/d');
             $blog_type = Request::instance()->post('blog_type/s');
+            $blog_tags = Request::instance()->post('blog_tags/s');
+            $blog_tag_ids = [];
+            if(!empty($blog_tags)){
+                $blog_tags = explode(',',$blog_tags);
+                $tagModel = new \app\admin\model\BlogTag();
+                foreach($blog_tags as $k=>$v){
+                    $tag_info = $tagModel->getTagOneByWhere(['tag_name'=>str_replace([' '],'',$v)]);
+                    if(!empty($tag_info)){
+                        $blog_tag_ids[] = $tag_info['tag_id'];
+                    }else{
+                        $insertTagData = [
+                            'tag_name' => $v,
+                            'status' => 1,
+                            'create_time' => time(),
+                            'update_time' => time()
+                        ];
+                        if($result_tag_id = $tagModel->saveTag($insertTagData,[])){
+                            $blog_tag_ids[] = $result_tag_id;
+                        }
+                    }
+                }
+            }
+            $blog_tags = implode(',',$blog_tag_ids);
             $blog_url = Request::instance()->post('blog_url/s');
             $is_index = Request::instance()->post('is_index/d');
             $index_sort = Request::instance()->post('index_sort/d');
@@ -169,6 +204,7 @@ class BlogBlog extends Base
                 'blog_detail' => $blog_detail,
                 'list_sort' => $list_sort,
                 'blog_type' => $blog_type,
+                'blog_tags' => $blog_tags,
                 'blog_url' => $blog_url,
                 'is_index' => $is_index,
                 'index_sort' => $index_sort,
