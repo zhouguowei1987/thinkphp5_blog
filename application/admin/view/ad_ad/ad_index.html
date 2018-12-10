@@ -62,7 +62,7 @@
 
     <xblock>
         <div class="layui-btn-group">
-            <a class="layui-btn"  href="javascript:;" onclick="x_admin_show('添加广告','{:url(\'ad_ad/adAdd\')}',1000,600)"><i class="layui-icon">&#xe61f;</i>添加</a>
+            <a class="layui-btn"  href="javascript:;" onclick="x_admin_show('添加广告','{:url(\'ad_ad/adAdd\')}',1000,700)"><i class="layui-icon">&#xe61f;</i>添加</a>
             <button class="layui-btn layui-btn-warm" onclick="javascript:document.getElementsByClassName('layui-laypage-btn')[0].click();"><i class="layui-icon">&#xe669;</i>刷新</button>
         </div>
     </xblock>
@@ -167,7 +167,7 @@
                         });
                     });
                 } else if(obj.event === 'edit'){
-                    x_admin_show('编辑广告',"{:url(\'ad_ad/adEdit\')}?ad_id="+data.ad_id,1000,600);
+                    x_admin_show('编辑广告',"{:url(\'ad_ad/adEdit\')}?ad_id="+data.ad_id,1000,700);
                 }
             });
             var $ = layui.$, active = {

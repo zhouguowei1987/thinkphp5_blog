@@ -24,7 +24,7 @@
                 <span class="x-red">*</span>所属广告位：
             </label>
             <div class="layui-input-inline">
-                <select name="position_id">
+                <select name="position_id" lay-verify="required|position_id">
                     <option value="">==选择广告位==</option>
                     <?php if(isset($position)):?>
                     <?php foreach($position as $v):?>
@@ -100,6 +100,9 @@
                 <div class="layui-input-inline">
                     <input type="text"  name="ad_image_open_url" lay-verify="ad_image_open_url" placeholder="输入广告图片链接..." autocomplete="off" value="" class="layui-input">
                 </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>输入http或https开头的网址
+                </div>
             </div>
         </div>
         <div class="layui-form-item" id="ad_text_div" style="display: none;">
@@ -114,6 +117,12 @@
                     window.editor = K.create('#ad_text');
                 });
             </script>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序：</label>
+            <div class="layui-input-inline">
+                <input type="type" name="listorder" lay-verify="number" placeholder="输入排序..." value="0" class="layui-input">
+            </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">启用状态：</label>
@@ -137,8 +146,13 @@
 
         //自定义验证规则
         form.verify({
+            position_id:function (value) {
+                if(typeof value == 'undefined' || value == ''){
+                    return '选择所属广告位';
+                }
+            },
             ad_image_open_url: function(value){
-                if($("input[name='ad_type']").val() == 0){
+                if($("input[name='ad_type']").val() == 1){
                     if(value.length <= 0){
                         return '必填项不能为空';
                     }
@@ -165,15 +179,25 @@
             }
         });
 
+        //监听指定开关
+        form.on('switch(switchStatus)', function(data){
+            this.checked ? $("input[name='status']").val(1) : $("input[name='status']").val(0);
+        });
+
         //监听提交
         form.on('submit(save)', function(data){
             var ad_id = $("input[name='ad_id']").val();
             var ad_name = $("input[name='ad_name']").val();
-            var ad_code = $("input[name='ad_code']").val();
+            var position_id = $("select[name='position_id']").val();
+            var ad_type = $("input[name='ad_type']").val();
+            var ad_image = $("input[name='ad_image']").val();
+            var ad_image_open_url = $("input[name='ad_image_open_url']").val();
+            var ad_text = editor.html();
+            var listorder = $("input[name='listorder']").val();
             var status = $("input[name='status']").val();
 
             var post_url = "{:url('ad_ad/ajaxSaveAd')}";
-            var post_data = {"ad_id":ad_id,"ad_name":ad_name,"ad_code":ad_code,"status":status};
+            var post_data = {"ad_id":ad_id,"ad_name":ad_name,"position_id":position_id,"ad_type":ad_type,"ad_image":ad_image,"ad_image_open_url":ad_image_open_url,"ad_text":ad_text,"listorder":listorder,"status":status};
             var index = layer.load(1, {
                 shade: [0.5,'#fff'] //0.1透明度的白色背景
             });

@@ -3,6 +3,8 @@
 
 <head>
     {include file="common/header" /}
+    <script charset="utf-8" src="/public/static/admin/lib/kindeditor/kindeditor-all.js"></script>
+    <script charset="utf-8" src="/public/static/admin/lib/kindeditor/lang/zh-CN.js"></script>
 </head>
 
 <body>
@@ -10,26 +12,123 @@
     <form class="layui-form layui-form-pane">
         <div class="layui-form-item">
             <label class="layui-form-label">
-                <span class="x-red">*</span>广告位名称：
+                <span class="x-red">*</span>广告名称：
             </label>
             <div class="layui-input-inline">
-                <input type="hidden" name="position_id" value="<?php if(isset($position_info)):?><?php echo $position_info['position_id'];?><?php else:?>0<?php endif;?>" class="layui-input">
-                <input type="text"  name="position_name" lay-verify="required" placeholder="输入广告位名称..." autocomplete="off" value="<?php if(isset($position_info)):?><?php echo $position_info['position_name'];?><?php endif;?>" class="layui-input">
+                <input type="hidden" name="ad_id" value="<?php if(isset($ad_info)):?><?php echo $ad_info['ad_id'];?><?php endif;?>" class="layui-input">
+                <input type="text"  name="ad_name" lay-verify="required" placeholder="输入广告名称..." autocomplete="off" value="<?php if(isset($ad_info)):?><?php echo $ad_info['ad_name'];?><?php endif;?>" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">
-                <span class="x-red">*</span>广告位code：
+                <span class="x-red">*</span>所属广告位：
             </label>
             <div class="layui-input-inline">
-                <input type="text"  name="position_code" lay-verify="required" placeholder="输入广告位code..." autocomplete="off" value="<?php if(isset($position_info)):?><?php echo $position_info['position_code'];?><?php endif;?>" class="layui-input">
+                <select name="position_id" lay-verify="required|position_id">
+                    <option value="">==选择广告位==</option>
+                    <?php if(isset($position)):?>
+                    <?php foreach($position as $v):?>
+                    <option value="<?php echo $v['position_id'];?>" <?php if(isset($ad_info) && $ad_info['position_id'] == $v['position_id']):?>selected="selected"<?php endif;?>><?php echo $v['position_name'];?></option>
+                    <?php endforeach;?>
+                    <?php endif;?>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">广告类型：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="ad_type" value="<?php if(isset($ad_info)):?><?php echo $ad_info['ad_type'];?><?php endif;?>" class="layui-input">
+                <input type="checkbox" <?php if(isset($ad_info) && $ad_info['ad_type'] == 1):?>checked=""<?php endif;?> lay-skin="switch" lay-filter="switchAdType" lay-text="图片|文字">
+            </div>
+        </div>
+        <div  id="ad_image_div" style="display:<?php if(isset($ad_info) && $ad_info['ad_type'] == 1):?>block;<?php else:?>none;<?php endif;?>">
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <span class="x-red">*</span>广告图片：
+                </label>
+                <div class="layui-input-inline">
+                    <div class="layui-upload">
+                        <input type="hidden" name="ad_image" lay-verify="" autocomplete="off" value="<?php if(isset($ad_info)):?><?php echo $ad_info['ad_image'];?><?php endif;?>" class="layui-input">
+                        <button class="layui-btn" type="button" id="ad_image_button"><i class="layui-icon">&#xe67c;</i>上传广告图片</button>
+                        <div class="layui-upload-list">
+                            <img id="ad_image_preview" class="layui-upload-img" style="<?php if(isset($ad_info) && !empty($ad_info['ad_image'])):?>display:block;<?php else:?>display:none;<?php endif;?>width: 100%;" src="<?php if(isset($ad_info)):?><?php echo $ad_info['ad_image'];?><?php endif;?>">
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    layui.use('upload', function() {
+                        var upload = layui.upload;
+                        upload.render({
+                            elem: '#ad_image_button',
+                            url: '{:url("common/ajaxCommonUploadImages")}',
+                            data: {'upload_file':'ad_image_file','save_path':'blog/ad'},
+                            accept:'images',
+                            acceptMime: 'image/*',
+                            auto:true,
+                            field:'ad_image_file',
+                            before: function(obj){
+                                //预读本地文件示例，不支持ie8
+                                obj.preview(function(index, file, result){
+                                    $('#ad_image_preview').attr('src', result);
+                                });
+                                layer.load(); //上传loading
+                            },
+                            done: function(res, index, upload){
+                                if(res.status == 200){
+                                    //上传成功
+                                    $("#ad_image_preview").show().attr('src',res.save_path);
+                                    $("input[name='ad_image']").val(res.save_path);
+                                    layer.msg(res.msg, {icon: 6});
+                                }else if(res.status == 500){
+                                    //上传失败
+                                    $("#blog_thumb_preview").hide();
+                                    layer.msg(res.msg, {icon: 5});
+                                }
+                                layer.closeAll('loading'); //关闭loading
+                            },
+                            error: function(index, upload){
+                                layer.closeAll('loading'); //关闭loading
+                            }
+                        })
+                    });
+                </script>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <span class="x-red">*</span>图片链接：
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text"  name="ad_image_open_url" lay-verify="ad_image_open_url" placeholder="输入广告图片链接..." autocomplete="off" value="<?php if(isset($ad_info)):?><?php echo $ad_info['ad_image_open_url'];?><?php endif;?>" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>输入http或https开头的网址
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" id="ad_text_div"  style="display:<?php if(isset($ad_info) && $ad_info['ad_type'] == 2):?>block;<?php else:?>none;<?php endif;?>">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>广告文字：
+            </label>
+            <div class="layui-input-block">
+                <textarea name="ad_text" id="ad_text" placeholder="输入广告文字..." style="width:100%;height:400px;" class="layui-textarea"><?php if(isset($ad_info)):?><?php echo $ad_info['ad_text'];?><?php endif;?></textarea>
+            </div>
+            <script>
+                KindEditor.ready(function(K) {
+                    window.editor = K.create('#ad_text');
+                });
+            </script>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序：</label>
+            <div class="layui-input-inline">
+                <input type="type" name="listorder" lay-verify="number" placeholder="输入排序..." value="<?php if(isset($ad_info)):?><?php echo $ad_info['listorder'];?><?php endif;?>" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">启用状态：</label>
             <div class="layui-input-block">
-                <input type="hidden" id="status" name="status" value="<?php if(isset($position_info)):?><?php echo $position_info['status'];?><?php endif;?>" class="layui-input">
-                <input type="checkbox" <?php if(isset($position_info) && $position_info['status'] == 1):?>checked=""<?php endif;?> switch="status" lay-skin="switch" lay-filter="switchStatus" lay-text="启用|停用">
+                <input type="hidden" id="status" name="status" value="<?php if(isset($ad_info)):?><?php echo $ad_info['status'];?><?php endif;?>" class="layui-input">
+                <input type="checkbox" <?php if(isset($ad_info) && $ad_info['status'] == 1):?>checked=""<?php endif;?> switch="status" lay-skin="switch" lay-filter="switchStatus" lay-text="启用|停用">
             </div>
         </div>
         <div class="layui-form-item">
@@ -45,6 +144,41 @@
         var form = layui.form
             ,layer = layui.layer;
 
+        //自定义验证规则
+        form.verify({
+            position_id:function (value) {
+                if(typeof value == 'undefined' || value == ''){
+                    return '选择所属广告位';
+                }
+            },
+            ad_image_open_url: function(value){
+                if($("input[name='ad_type']").val() == 1){
+                    if(value.length <= 0){
+                        return '必填项不能为空';
+                    }
+                }
+                if(typeof value != 'undefined' && value.length > 0){
+                    var reg = /(^#)|(^http(s*):\/\/[^\s]+\.[^\s]+)/;
+                    if(!reg.test(value)){
+                        return '链接格式不正确';
+                    }
+                }
+            }
+        });
+
+        //监听指定开关
+        form.on('switch(switchAdType)', function(data){
+            if(this.checked){
+                $("input[name='ad_type']").val(1);
+                $("#ad_image_div").show();
+                $("#ad_text_div").hide();
+            }else{
+                $("input[name='ad_type']").val(2);
+                $("#ad_image_div").hide();
+                $("#ad_text_div").show();
+            }
+        });
+
         //监听指定开关
         form.on('switch(switchStatus)', function(data){
             this.checked ? $("input[name='status']").val(1) : $("input[name='status']").val(0);
@@ -52,13 +186,18 @@
 
         //监听提交
         form.on('submit(save)', function(data){
-            var position_id = $("input[name='position_id']").val();
-            var position_name = $("input[name='position_name']").val();
-            var position_code = $("input[name='position_code']").val();
+            var ad_id = $("input[name='ad_id']").val();
+            var ad_name = $("input[name='ad_name']").val();
+            var position_id = $("select[name='position_id']").val();
+            var ad_type = $("input[name='ad_type']").val();
+            var ad_image = $("input[name='ad_image']").val();
+            var ad_image_open_url = $("input[name='ad_image_open_url']").val();
+            var ad_text = editor.html();
+            var listorder = $("input[name='listorder']").val();
             var status = $("input[name='status']").val();
 
-            var post_url = "{:url('ad_position/ajaxSavePosition')}";
-            var post_data = {"position_id":position_id,"position_name":position_name,"position_code":position_code,"status":status};
+            var post_url = "{:url('ad_ad/ajaxSaveAd')}";
+            var post_data = {"ad_id":ad_id,"ad_name":ad_name,"position_id":position_id,"ad_type":ad_type,"ad_image":ad_image,"ad_image_open_url":ad_image_open_url,"ad_text":ad_text,"listorder":listorder,"status":status};
             var index = layer.load(1, {
                 shade: [0.5,'#fff'] //0.1透明度的白色背景
             });

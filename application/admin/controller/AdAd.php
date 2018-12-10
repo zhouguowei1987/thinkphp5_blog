@@ -162,25 +162,27 @@ class AdAd extends Base
             $ad_info = $adModel->getAdOneByWhere(['ad_id'=>$ad_id]);
             $where = [];
             $ad_name = str_replace([' '],'',Request::instance()->post('ad_name/s'));
-            $ad_code = str_replace([' '],'',Request::instance()->post('ad_code/s'));
+            $position_id = Request::instance()->post('position_id/d');
+            $ad_type = Request::instance()->post('ad_type/d');
+            $ad_image = Request::instance()->post('ad_image/s','');
+            $ad_image_open_url = Request::instance()->post('ad_image_open_url/s','');
+            $ad_text = Request::instance()->post('ad_text/s','');
+            $listorder = Request::instance()->post('listorder/d',0);
             $status = Request::instance()->post('status/d');
             $data = [
                 'ad_name' => $ad_name,
-                'ad_code' => $ad_code,
+                'position_id' => $position_id,
+                'ad_type' => $ad_type,
+                'ad_image' => $ad_image,
+                'ad_image_open_url' => $ad_image_open_url,
+                'ad_text' => $ad_text,
+                'listorder' => $listorder,
                 'status' => $status,
                 'update_time' => time()
             ];
-            //查看广告code是否可用
-            $code_ad_info = $adModel->getAdOneByWhere(['ad_code'=>$ad_code]);
             if(!empty($ad_info)){
-                if(!empty($code_ad_info) && $code_ad_info['ad_id'] != $ad_id){
-                    return json(['status'=>500,'msg'=>'广告code已存在，不可使用']);
-                }
                 $where['ad_id'] = $ad_id;
             }else{
-                if(!empty($code_ad_info)){
-                    return json(['status'=>500,'msg'=>'广告code已存在无需重复添加']);
-                }
                 $data['create_time'] = time();
             }
             if($result_ad_id = $adModel->saveAd($data,$where)){

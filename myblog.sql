@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-12-07 18:03:49
+Date: 2018-12-10 09:39:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,11 +33,15 @@ CREATE TABLE `zgw_ad` (
   `update_time` int(10) NOT NULL,
   PRIMARY KEY (`ad_id`),
   KEY `catid` (`position_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='广告表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='广告表';
 
 -- ----------------------------
 -- Records of zgw_ad
 -- ----------------------------
+INSERT INTO `zgw_ad` VALUES ('1', '博客首页banner幻灯片1', '1', '1', '/uploads/blog/ad/20181210/61ff1ee7353e5649d361c7d048c537bb.jpg', 'https://www.baidu.com', '', '0', '1', '1544404862', '1544405590');
+INSERT INTO `zgw_ad` VALUES ('2', '博客首页banner幻灯片2', '1', '1', '/uploads/blog/ad/20181210/ce705b3f27db056721b88cecb44e0f34.jpg', 'https://www.baidu.com/', '', '0', '1', '1544405642', '1544405939');
+INSERT INTO `zgw_ad` VALUES ('3', '博客右侧侧栏广告1', '2', '1', '/uploads/blog/ad/20181210/c7f10019f65252e01a548781cfde9e83.jpg', 'https://www.baidu.com/', '', '0', '1', '1544405698', '1544405928');
+INSERT INTO `zgw_ad` VALUES ('4', '博客右侧侧栏广告2', '3', '1', '/uploads/blog/ad/20181210/c31181e4224c1a69d908e1bfb473ebcd.jpg', 'https://www.baidu.com/', '', '0', '1', '1544405733', '1544405733');
 
 -- ----------------------------
 -- Table structure for `zgw_admin`
@@ -65,7 +69,7 @@ CREATE TABLE `zgw_admin` (
 -- ----------------------------
 -- Records of zgw_admin
 -- ----------------------------
-INSERT INTO `zgw_admin` VALUES ('1', '1', 'Function', '周国伟', '15238369929', '729044963@qq.com', '613a33920012022866077a04f60281aa', 'V218UZ', '2130706433', '1544146382', '88', '1', '1541987880', '1544077187');
+INSERT INTO `zgw_admin` VALUES ('1', '1', 'Function', '周国伟', '15238369929', '729044963@qq.com', '613a33920012022866077a04f60281aa', 'V218UZ', '2130706433', '1544403894', '89', '1', '1541987880', '1544077187');
 INSERT INTO `zgw_admin` VALUES ('2', '2', 'guowei.zhou@xinlixiangdao.com', 'guowei.zhou', '15803889687', 'guowei.zhou@xinlixiangdao.com', '937ecae9c3399d7070f3b9a5d9ca26f6', 'UE3ECK', '2130706433', '1542251417', '2', '1', '1542248310', '1542944347');
 INSERT INTO `zgw_admin` VALUES ('3', '4', 'zhangsan', '张三', '15823654785', 'zhangsan@xinlixiangdao.com', '80d3ea2b2a649010dfbbe6d55ed52854', 'ZLHBBY', '2130706433', '1542704229', '1', '1', '1542251598', '1543386782');
 INSERT INTO `zgw_admin` VALUES ('4', '2', 'lisi@xinlixiangdao.com', 'lisi', '15896547852', 'lisi@xinlixiangdao.com', '7b32db825ff0a496b36ab5695f795dc2', 'UNF3RY', '2130706433', '1542362416', '20', '0', '1542272330', '1542879101');
@@ -85,7 +89,7 @@ CREATE TABLE `zgw_admin_action_log` (
   `log_create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '执行行为的时间',
   PRIMARY KEY (`log_id`),
   KEY `log_id` (`log_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=277 DEFAULT CHARSET=utf8 COMMENT='行为日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=290 DEFAULT CHARSET=utf8 COMMENT='行为日志表';
 
 -- ----------------------------
 -- Records of zgw_admin_action_log
@@ -366,6 +370,19 @@ INSERT INTO `zgw_admin_action_log` VALUES ('273', '1', '编辑广告位-博客�
 INSERT INTO `zgw_admin_action_log` VALUES ('274', '1', '编辑广告位-博客首页banner幻灯片', '/admin/ad_position/ajaxSavePosition.html', 'a:4:{s:13:\"position_name\";s:27:\"博客首页banner幻灯片\";s:13:\"position_code\";s:17:\"blog_index_banner\";s:6:\"status\";i:1;s:11:\"update_time\";i:1544171538;}', '2130706433', '1544171538');
 INSERT INTO `zgw_admin_action_log` VALUES ('275', '1', '添加广告位-博客右侧侧栏广告1', '/admin/ad_position/ajaxSavePosition.html', 'a:5:{s:13:\"position_name\";s:25:\"博客右侧侧栏广告1\";s:13:\"position_code\";s:18:\"blog_right_aside_1\";s:6:\"status\";i:1;s:11:\"update_time\";i:1544171751;s:11:\"create_time\";i:1544171751;}', '2130706433', '1544171751');
 INSERT INTO `zgw_admin_action_log` VALUES ('276', '1', '添加广告位-博客右侧侧栏广告2', '/admin/ad_position/ajaxSavePosition.html', 'a:5:{s:13:\"position_name\";s:25:\"博客右侧侧栏广告2\";s:13:\"position_code\";s:18:\"blog_right_aside_2\";s:6:\"status\";i:1;s:11:\"update_time\";i:1544171780;s:11:\"create_time\";i:1544171780;}', '2130706433', '1544171780');
+INSERT INTO `zgw_admin_action_log` VALUES ('277', '1', '登录管理后台', '/admin/common/login.html', '', '2130706433', '1544403894');
+INSERT INTO `zgw_admin_action_log` VALUES ('278', '1', '添加广告-博客首页banner幻灯片1', '/admin/ad_ad/ajaxSaveAd.html', 'a:10:{s:7:\"ad_name\";s:28:\"博客首页banner幻灯片1\";s:11:\"position_id\";i:1;s:7:\"ad_type\";i:1;s:8:\"ad_image\";s:62:\"/uploads/blog/ad/20181210/b3fcd3c77ae0681ca6554c211c358fdb.jpg\";s:17:\"ad_image_open_url\";s:21:\"https://www.baidu.com\";s:7:\"ad_text\";s:0:\"\";s:9:\"listorder\";i:0;s:6:\"status\";i:1;s:11:\"update_time\";i:1544404862;s:11:\"create_time\";i:1544404862;}', '2130706433', '1544404862');
+INSERT INTO `zgw_admin_action_log` VALUES ('279', '1', '编辑广告-博客首页banner幻灯片1', '/admin/ad_ad/ajaxSaveAd.html', 'a:9:{s:7:\"ad_name\";s:28:\"博客首页banner幻灯片1\";s:11:\"position_id\";i:1;s:7:\"ad_type\";i:1;s:8:\"ad_image\";s:62:\"/uploads/blog/ad/20181210/b3fcd3c77ae0681ca6554c211c358fdb.jpg\";s:17:\"ad_image_open_url\";s:21:\"https://www.baidu.com\";s:7:\"ad_text\";s:0:\"\";s:9:\"listorder\";i:0;s:6:\"status\";i:1;s:11:\"update_time\";i:1544405546;}', '2130706433', '1544405546');
+INSERT INTO `zgw_admin_action_log` VALUES ('280', '1', '编辑广告-博客首页banner幻灯片1', '/admin/ad_ad/ajaxSaveAd.html', 'a:9:{s:7:\"ad_name\";s:28:\"博客首页banner幻灯片1\";s:11:\"position_id\";i:1;s:7:\"ad_type\";i:1;s:8:\"ad_image\";s:62:\"/uploads/blog/ad/20181210/61ff1ee7353e5649d361c7d048c537bb.jpg\";s:17:\"ad_image_open_url\";s:21:\"https://www.baidu.com\";s:7:\"ad_text\";s:0:\"\";s:9:\"listorder\";i:0;s:6:\"status\";i:1;s:11:\"update_time\";i:1544405557;}', '2130706433', '1544405557');
+INSERT INTO `zgw_admin_action_log` VALUES ('281', '1', '编辑广告-博客首页banner幻灯片1', '/admin/ad_ad/ajaxSaveAd.html', 'a:9:{s:7:\"ad_name\";s:28:\"博客首页banner幻灯片1\";s:11:\"position_id\";i:1;s:7:\"ad_type\";i:1;s:8:\"ad_image\";s:62:\"/uploads/blog/ad/20181210/61ff1ee7353e5649d361c7d048c537bb.jpg\";s:17:\"ad_image_open_url\";s:21:\"https://www.baidu.com\";s:7:\"ad_text\";s:0:\"\";s:9:\"listorder\";i:0;s:6:\"status\";i:1;s:11:\"update_time\";i:1544405590;}', '2130706433', '1544405590');
+INSERT INTO `zgw_admin_action_log` VALUES ('282', '1', '添加广告-博客首页banner幻灯片2', '/admin/ad_ad/ajaxSaveAd.html', 'a:10:{s:7:\"ad_name\";s:28:\"博客首页banner幻灯片2\";s:11:\"position_id\";i:1;s:7:\"ad_type\";i:1;s:8:\"ad_image\";s:62:\"/uploads/blog/ad/20181210/ce705b3f27db056721b88cecb44e0f34.jpg\";s:17:\"ad_image_open_url\";s:22:\"https://www.baidu.com/\";s:7:\"ad_text\";s:0:\"\";s:9:\"listorder\";i:0;s:6:\"status\";i:1;s:11:\"update_time\";i:1544405642;s:11:\"create_time\";i:1544405642;}', '2130706433', '1544405643');
+INSERT INTO `zgw_admin_action_log` VALUES ('283', '1', '添加广告-博客右侧侧栏广告1', '/admin/ad_ad/ajaxSaveAd.html', 'a:10:{s:7:\"ad_name\";s:25:\"博客右侧侧栏广告1\";s:11:\"position_id\";i:2;s:7:\"ad_type\";i:1;s:8:\"ad_image\";s:62:\"/uploads/blog/ad/20181210/c7f10019f65252e01a548781cfde9e83.jpg\";s:17:\"ad_image_open_url\";s:22:\"https://www.baidu.com/\";s:7:\"ad_text\";s:0:\"\";s:9:\"listorder\";i:0;s:6:\"status\";i:1;s:11:\"update_time\";i:1544405698;s:11:\"create_time\";i:1544405698;}', '2130706433', '1544405698');
+INSERT INTO `zgw_admin_action_log` VALUES ('284', '1', '添加广告-博客右侧侧栏广告2', '/admin/ad_ad/ajaxSaveAd.html', 'a:10:{s:7:\"ad_name\";s:25:\"博客右侧侧栏广告2\";s:11:\"position_id\";i:3;s:7:\"ad_type\";i:1;s:8:\"ad_image\";s:62:\"/uploads/blog/ad/20181210/c31181e4224c1a69d908e1bfb473ebcd.jpg\";s:17:\"ad_image_open_url\";s:22:\"https://www.baidu.com/\";s:7:\"ad_text\";s:0:\"\";s:9:\"listorder\";i:0;s:6:\"status\";i:1;s:11:\"update_time\";i:1544405733;s:11:\"create_time\";i:1544405733;}', '2130706433', '1544405733');
+INSERT INTO `zgw_admin_action_log` VALUES ('285', '1', '编辑广告-博客右侧侧栏广告1', '/admin/ad_ad/ajaxSaveAd.html', 'a:9:{s:7:\"ad_name\";s:25:\"博客右侧侧栏广告1\";s:11:\"position_id\";i:2;s:7:\"ad_type\";i:1;s:8:\"ad_image\";s:62:\"/uploads/blog/ad/20181210/c7f10019f65252e01a548781cfde9e83.jpg\";s:17:\"ad_image_open_url\";s:22:\"https://www.baidu.com/\";s:7:\"ad_text\";s:0:\"\";s:9:\"listorder\";i:0;s:6:\"status\";i:1;s:11:\"update_time\";i:1544405740;}', '2130706433', '1544405740');
+INSERT INTO `zgw_admin_action_log` VALUES ('286', '1', '编辑广告-博客右侧侧栏广告1', '/admin/ad_ad/ajaxSaveAd.html', 'a:9:{s:7:\"ad_name\";s:25:\"博客右侧侧栏广告1\";s:11:\"position_id\";i:2;s:7:\"ad_type\";i:1;s:8:\"ad_image\";s:62:\"/uploads/blog/ad/20181210/c7f10019f65252e01a548781cfde9e83.jpg\";s:17:\"ad_image_open_url\";s:22:\"https://www.baidu.com/\";s:7:\"ad_text\";s:0:\"\";s:9:\"listorder\";i:0;s:6:\"status\";i:0;s:11:\"update_time\";i:1544405756;}', '2130706433', '1544405756');
+INSERT INTO `zgw_admin_action_log` VALUES ('287', '1', '编辑广告-博客右侧侧栏广告1', '/admin/ad_ad/ajaxSaveAd.html', 'a:9:{s:7:\"ad_name\";s:25:\"博客右侧侧栏广告1\";s:11:\"position_id\";i:2;s:7:\"ad_type\";i:1;s:8:\"ad_image\";s:62:\"/uploads/blog/ad/20181210/c7f10019f65252e01a548781cfde9e83.jpg\";s:17:\"ad_image_open_url\";s:22:\"https://www.baidu.com/\";s:7:\"ad_text\";s:0:\"\";s:9:\"listorder\";i:0;s:6:\"status\";i:0;s:11:\"update_time\";i:1544405925;}', '2130706433', '1544405925');
+INSERT INTO `zgw_admin_action_log` VALUES ('288', '1', '编辑广告-博客右侧侧栏广告1', '/admin/ad_ad/ajaxSaveAd.html', 'a:9:{s:7:\"ad_name\";s:25:\"博客右侧侧栏广告1\";s:11:\"position_id\";i:2;s:7:\"ad_type\";i:1;s:8:\"ad_image\";s:62:\"/uploads/blog/ad/20181210/c7f10019f65252e01a548781cfde9e83.jpg\";s:17:\"ad_image_open_url\";s:22:\"https://www.baidu.com/\";s:7:\"ad_text\";s:0:\"\";s:9:\"listorder\";i:0;s:6:\"status\";i:1;s:11:\"update_time\";i:1544405928;}', '2130706433', '1544405928');
+INSERT INTO `zgw_admin_action_log` VALUES ('289', '1', '编辑广告-博客首页banner幻灯片2', '/admin/ad_ad/ajaxSaveAd.html', 'a:9:{s:7:\"ad_name\";s:28:\"博客首页banner幻灯片2\";s:11:\"position_id\";i:1;s:7:\"ad_type\";i:1;s:8:\"ad_image\";s:62:\"/uploads/blog/ad/20181210/ce705b3f27db056721b88cecb44e0f34.jpg\";s:17:\"ad_image_open_url\";s:22:\"https://www.baidu.com/\";s:7:\"ad_text\";s:0:\"\";s:9:\"listorder\";i:0;s:6:\"status\";i:0;s:11:\"update_time\";i:1544405934;}', '2130706433', '1544405934');
 
 -- ----------------------------
 -- Table structure for `zgw_admin_auth_access`
@@ -551,7 +568,7 @@ CREATE TABLE `zgw_ad_position` (
 -- ----------------------------
 -- Records of zgw_ad_position
 -- ----------------------------
-INSERT INTO `zgw_ad_position` VALUES ('1', '博客首页banner幻灯片', 'blog_index_banner', '1', '1544171449', '1544171538');
+INSERT INTO `zgw_ad_position` VALUES ('1', '博客首页banner幻灯片', 'blog_index_banner', '1', '1544171449', '1544403946');
 INSERT INTO `zgw_ad_position` VALUES ('2', '博客右侧侧栏广告1', 'blog_right_aside_1', '1', '1544171751', '1544171751');
 INSERT INTO `zgw_ad_position` VALUES ('3', '博客右侧侧栏广告2', 'blog_right_aside_2', '1', '1544171780', '1544171780');
 
