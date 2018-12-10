@@ -33,16 +33,22 @@ class AdAd extends Base
             $offset = ($page - 1) * $limit;
             $adModel = new \app\admin\model\AdAd();
             $where = [];
+            if(Request::instance()->has('position_id')) {
+                $position_id = Request::instance()->get('position_id/d');
+                if ($position_id) {
+                    $where['position_id'] = $position_id;
+                }
+            }
             if(Request::instance()->has('ad_name')) {
                 $ad_name = Request::instance()->get('ad_name/s');
                 if ($ad_name) {
                     $where['ad_name'] = ['LIKE',"%{$ad_name}%"];
                 }
             }
-            if(Request::instance()->has('ad_code')) {
-                $ad_code = Request::instance()->get('ad_code/s');
-                if ($ad_code) {
-                    $where['ad_code'] = $ad_code;
+            if(Request::instance()->has('ad_type')) {
+                $ad_type = Request::instance()->get('ad_type/d');
+                if ($ad_type) {
+                    $where['ad_type'] = $ad_type;
                 }
             }
             if(Request::instance()->has('status')) {

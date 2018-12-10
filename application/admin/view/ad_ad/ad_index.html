@@ -35,10 +35,10 @@
                     广告类型：
                 </label>
                 <div class="layui-input-inline">
-                    <select name="status">
-                        <option value="2">==广告类型==</option>
+                    <select name="ad_type">
+                        <option value="">==广告类型==</option>
                         <option value="1">图片</option>
-                        <option value="0">文字</option>
+                        <option value="2">文字</option>
                     </select>
                 </div>
             </div>
@@ -173,10 +173,12 @@
             var $ = layui.$, active = {
                 reload: function(){
                     var where = {};
+                    var position_id = $("select[name='position_id']").val();
+                    where.position_id = position_id;
                     var ad_name = $("input[name='ad_name']").val();
                     where.ad_name = ad_name;
-                    var ad_code = $("input[name='ad_code']").val();
-                    where.ad_code = ad_code;
+                    var ad_type = $("select[name='ad_type']").val();
+                    where.ad_type = ad_type;
                     var status = $("select[name='status']").val();
                     where.status = status;
                     table.reload('tableReload', {
